@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27428.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCS.Framework", "HCS.Framework\HCS.Framework.csproj", "{58CE90D7-B915-44D9-B63B-F46DEF7C4B33}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCS", "..\HCS\HCS\HCS.csproj", "{3AF820FD-6776-4C74-AA76-F918E60FE456}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{58CE90D7-B915-44D9-B63B-F46DEF7C4B33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58CE90D7-B915-44D9-B63B-F46DEF7C4B33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58CE90D7-B915-44D9-B63B-F46DEF7C4B33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AF820FD-6776-4C74-AA76-F918E60FE456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AF820FD-6776-4C74-AA76-F918E60FE456}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AF820FD-6776-4C74-AA76-F918E60FE456}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AF820FD-6776-4C74-AA76-F918E60FE456}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

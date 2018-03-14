@@ -33,5 +33,29 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\Api.cs" />
+    <Compile Include="Core\ServiceProviderCore.cs" />
+    <Compile Include="Enums\ClaimDirection.cs" />
+    <Compile Include="Implement\Claim.cs" />
+    <Compile Include="Implement\Package.cs" />
+    <Compile Include="Implement\Parameter.cs" />
+    <Compile Include="Interfaces\IClaim.cs" />
+    <Compile Include="Interfaces\IMessage.cs" />
+    <Compile Include="Interfaces\IPackage.cs" />
+    <Compile Include="Interfaces\IParameter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\HCS\HCS\HCS.csproj">
+      <Project>{3af820fd-6776-4c74-aa76-f918e60fe456}</Project>
+      <Name>HCS</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Base\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.ServiceModel" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
