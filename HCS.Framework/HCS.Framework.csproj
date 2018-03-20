@@ -47,6 +47,7 @@
     <Compile Include="Implement\Package.cs" />
     <Compile Include="Implement\Parameter.cs" />
     <Compile Include="Interfaces\IClaim.cs" />
+    <Compile Include="Interfaces\IConverter.cs" />
     <Compile Include="Interfaces\IMessage.cs" />
     <Compile Include="Interfaces\IPackage.cs" />
     <Compile Include="Interfaces\IParameter.cs" />

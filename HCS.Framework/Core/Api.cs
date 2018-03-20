@@ -10,7 +10,7 @@ namespace HCS.Framework.Core
     {
         public void Get<T>(Func<T> func)
         {
-
+            ServiceProviderCore core = new ServiceProviderCore()
         }
     }
 }
