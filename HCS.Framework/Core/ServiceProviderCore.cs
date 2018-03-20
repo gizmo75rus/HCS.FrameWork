@@ -16,11 +16,12 @@ namespace HCS.Framework.Core
         Polices.SoupFaultPolicy _faultPolicy;
 
         public delegate void ErrorHandler(string error,IMessageType message);
-        public delegate void AttemsHandler(int count);
+        public delegate void ActionHandler(int count);
 
-        public event ErrorHandler OnSendError;
-        public event ErrorHandler OnGetResultError;
-        public event AttemsHandler OnWork;
+       
+        public event ErrorHandler OnSendError = delegate { };
+        public event ErrorHandler OnGetResultError = delegate { };
+        public event ActionHandler OnWork = delegate { };
 
         /// <summary>
         /// Количество попыток для отправки
