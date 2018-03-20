@@ -44,6 +44,9 @@
     <Compile Include="Interfaces\IMessage.cs" />
     <Compile Include="Interfaces\IPackage.cs" />
     <Compile Include="Interfaces\IParameter.cs" />
+    <Compile Include="Polices\ActionByFault.cs" />
+    <Compile Include="Polices\Actions.cs" />
+    <Compile Include="Polices\SoupFaultPolicy.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\HCS\HCS\HCS.csproj">
