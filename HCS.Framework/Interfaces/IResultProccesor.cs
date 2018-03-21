@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HCS.Interfaces;
 
 namespace HCS.Framework.Interfaces
 {
-    internal interface IConverter<in T,out V> where T:class where V: class
+    interface IResultProccesor<T> where T : class
     {
-        V Convert(T value);
+        bool TryGet(IGetStateResult result, out IEnumerable<T> value);
     }
 }

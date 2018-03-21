@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace HCS.Framework.Interfaces
 {
-    internal interface IConverter<in T,out V> where T:class where V: class
+    interface IEgrpRelation
     {
-        V Convert(T value);
+        string CadastrNumber { get; set; }
+        bool HasNotRelation { get; set; }
     }
 }

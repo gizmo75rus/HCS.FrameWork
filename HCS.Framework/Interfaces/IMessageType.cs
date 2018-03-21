@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using HCS.Framework.Enums;
 using HCS.Globals;
 
 namespace HCS.Framework.Interfaces
 {
-    interface IMessageType
+    public interface IMessageType
     {
         /// <summary>
         /// Конечная точка (адресат)
@@ -52,7 +49,7 @@ namespace HCS.Framework.Interfaces
         /// <summary>
         /// Статус сообщения
         /// </summary>
-        MessageStatuses MessageStatus { get; set; }
+        MessageStatuses Status { get; set; }
 
     }
 }

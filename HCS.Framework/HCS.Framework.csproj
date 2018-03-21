@@ -37,20 +37,34 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\BaseDto.cs" />
     <Compile Include="Base\Ack.cs" />
+    <Compile Include="Base\BaseEventArgs.cs" />
+    <Compile Include="Base\BaseEvent.cs" />
+    <Compile Include="Base\Fault.cs" />
     <Compile Include="Base\Result.cs" />
     <Compile Include="Base\StateResult.cs" />
-    <Compile Include="Core\Api.cs" />
+    <Compile Include="Core\MessageBroker.cs" />
+    <Compile Include="Core\MessageStory.cs" />
     <Compile Include="Core\ServiceProviderCore.cs" />
+    <Compile Include="Dto\HouseManagment\AccountDto.cs" />
+    <Compile Include="Dto\HouseManagment\HouseDto.cs" />
+    <Compile Include="Dto\NsiRef.cs" />
     <Compile Include="Enums\ClaimDirection.cs" />
+    <Compile Include="Enums\MessageStatuses.cs" />
     <Compile Include="Implement\Claim.cs" />
+    <Compile Include="Implement\MessageType.cs" />
     <Compile Include="Implement\Package.cs" />
     <Compile Include="Implement\Parameter.cs" />
+    <Compile Include="Implement\ResultProccesor.cs" />
     <Compile Include="Interfaces\IClaim.cs" />
     <Compile Include="Interfaces\IConverter.cs" />
-    <Compile Include="Interfaces\IMessage.cs" />
+    <Compile Include="Interfaces\IDto.cs" />
+    <Compile Include="Interfaces\IEgrpRelation.cs" />
+    <Compile Include="Interfaces\IMessageType.cs" />
     <Compile Include="Interfaces\IPackage.cs" />
     <Compile Include="Interfaces\IParameter.cs" />
+    <Compile Include="Interfaces\IResultProccesor.cs" />
     <Compile Include="Polices\ActionByFault.cs" />
     <Compile Include="Polices\Actions.cs" />
     <Compile Include="Polices\SoupFaultPolicy.cs" />
@@ -61,7 +75,11 @@
       <Name>HCS</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Converters\HouseManagment\Export\" />
+    <Folder Include="Converters\HouseManagment\Import\" />
+    <Folder Include="Dto\Bills\" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="System.ServiceModel" />
   </ItemGroup>

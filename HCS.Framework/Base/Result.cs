@@ -8,4 +8,19 @@ namespace HCS.Framework.Base
         public IFault Fault { get; set; }
         public TValue Value { get; set; }
     }
+
+    public class Result
+    {
+        public bool HasError { get; set; }
+        public string ErrorMessage { get; set; }
+        public Result()
+        {
+            HasError = false;
+        }
+        public Result(string message)
+        {
+            HasError = true;
+            ErrorMessage = message;
+        }
+    }
 }

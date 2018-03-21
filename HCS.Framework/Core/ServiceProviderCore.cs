@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using HCS.BaseTypes;
 using HCS.Framework.Base;
+using HCS.Framework.Enums;
 using HCS.Framework.Interfaces;
 using HCS.Globals;
 using HCS.Interfaces;
@@ -19,9 +20,9 @@ namespace HCS.Framework.Core
         public delegate void ActionHandler(int count);
 
        
-        public event ErrorHandler OnSendError = delegate { };
-        public event ErrorHandler OnGetResultError = delegate { };
-        public event ActionHandler OnWork = delegate { };
+        public event ErrorHandler SendMessageErrorEvent = delegate { };
+        public event ErrorHandler GetResultMessageError = delegate { };
+        public event ActionHandler OnAction = delegate { };
 
         /// <summary>
         /// Количество попыток для отправки
@@ -60,7 +61,7 @@ namespace HCS.Framework.Core
                 var ack = provider.Send(message.Request);
                 message.SendDate = DateTime.Now;
                 message.ResponceGUID = Guid.Parse(ack.MessageGUID);
-                message.MessageStatus = MessageStatuses.SendOk;
+                message.Status = MessageStatuses.SendOk;
             }
             catch (System.ServiceModel.FaultException<IFault> ex) {
                 // Выбрать поведение в зависимости от кода ошибки soap ГИС 
@@ -69,28 +70,28 @@ namespace HCS.Framework.Core
 
                 switch (action) {
                     case Polices.Actions.NeedException:
-                        message.MessageStatus = MessageStatuses.SendCriticalError;
+                        message.Status = MessageStatuses.SendCriticalError;
                         throw new Exception(ex.Message);
                     case Polices.Actions.Abort:
-                        message.MessageStatus = MessageStatuses.SendCriticalError;
+                        message.Status = MessageStatuses.SendCriticalError;
                         break;
                     case Polices.Actions.TryAgain:
-                        message.MessageStatus = MessageStatuses.SendError;
+                        message.Status = MessageStatuses.SendError;
                         break;
                     default:
-                        message.MessageStatus = MessageStatuses.SendCriticalError;
+                        message.Status = MessageStatuses.SendCriticalError;
                         errorMessage = $"Поведение для действия {Enum.GetName(typeof(Polices.Actions), action)} не реализовано";
                         break;
                 }
-                OnSendError($"При отправке запроса в ГИС ЖКХ произошла ошибка {errorMessage}", message);
+                SendMessageErrorEvent($"При отправке запроса в ГИС ЖКХ произошла ошибка {errorMessage}", message);
             }
             catch (TimeoutException) {
-                message.MessageStatus = MessageStatuses.SendTimeout;
-                OnSendError("Запрос не отправлен, превышен интервал ожидания: ", message);
+                message.Status = MessageStatuses.SendTimeout;
+                SendMessageErrorEvent("Запрос не отправлен, превышен интервал ожидания: ", message);
             }
             catch (Exception ex) {
-                message.MessageStatus = MessageStatuses.SendCriticalError;
-                OnSendError("При отправке запроса произошло не обработанное исключение: " + ex, message);
+                message.Status = MessageStatuses.SendCriticalError;
+                SendMessageErrorEvent("При отправке запроса произошло не обработанное исключение: " + ex, message);
             }
         }
 
@@ -113,43 +114,43 @@ namespace HCS.Framework.Core
                     
                     if(provider.TryGetResult(ack, out stateResult)) {
                         message.CompliteDate = DateTime.Now;
-                        message.MessageStatus = MessageStatuses.GetResultOk;
+                        message.Status = MessageStatuses.GetResultOk;
                         message.Result = stateResult;
                     }
-                    OnWork(currentAttems);
+                    OnAction(currentAttems);
                     currentAttems--;
 
                     Thread.Sleep(ATTEMPS_INTERVAL);
                 }
-                message.MessageStatus = MessageStatuses.GetResultTimeout;
+                message.Status = MessageStatuses.GetResultTimeout;
             }
             catch (System.ServiceModel.FaultException<IFault> ex) {
                 var action = _faultPolicy.GetAction(ex.Detail.ErrorCode);
                 string errorMessage = ex.Detail.ErrorCode + " " + ex.Detail.ErrorMessage;
                 switch (action) {
                     case Polices.Actions.NeedException:
-                        message.MessageStatus = MessageStatuses.GetResultCriticalError;
+                        message.Status = MessageStatuses.GetResultCriticalError;
                         throw new Exception($"При отправке запроса в ГИС ЖКХ произошла ошибка {errorMessage}");
                     case Polices.Actions.Abort:
-                        message.MessageStatus = MessageStatuses.GetResultCriticalError;
+                        message.Status = MessageStatuses.GetResultCriticalError;
                         break;
                     case Polices.Actions.TryAgain:
-                        message.MessageStatus = MessageStatuses.GetResultError;
+                        message.Status = MessageStatuses.GetResultError;
                         break;
                     default:
-                        message.MessageStatus = MessageStatuses.GetResultCriticalError;
+                        message.Status = MessageStatuses.GetResultCriticalError;
                         errorMessage = $"Поведение для действия {Enum.GetName(typeof(Polices.Actions), action)} не реализовано";
                         break;
                 }
-                OnGetResultError($"При получении результата из ГИС ЖКХ произошла ошибка {errorMessage}",message);
+                GetResultMessageError($"При получении результата из ГИС ЖКХ произошла ошибка {errorMessage}",message);
             }
             catch (TimeoutException) {
-                message.MessageStatus = MessageStatuses.GetResultTimeout;
-                OnGetResultError($"При получении результата из ГИС ЖКХ превышен интервал ожидания", message);
+                message.Status = MessageStatuses.GetResultTimeout;
+                GetResultMessageError($"При получении результата из ГИС ЖКХ превышен интервал ожидания", message);
             }
             catch (Exception ex) {
-                message.MessageStatus = MessageStatuses.SendCriticalError;
-                OnGetResultError("При получении результата произошло не обработанное исключение: "+ex.Message, message);
+                message.Status = MessageStatuses.SendCriticalError;
+                GetResultMessageError("При получении результата произошло не обработанное исключение: "+ex.Message, message);
             }
         }
     }
