@@ -4,68 +4,95 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HCS.BaseTypes;
+using HCS.Framework.Implement;
+using HCS.Globals;
 
 namespace HCS.Framework.Core
 {
-    public delegate void MessageBrokerThread();
-
     public class MessageBroker
     {
-        static MessageBroker _insance;
-        static Object _this = new Object();
-        bool _latch = false;
         ServiceProviderCore _core;
         MessageStory _story;
+        Dictionary<Type, Delegate> _subscribers;
 
-        MessageBroker(ClientConfig config)
+        public MessageBroker(ClientConfig config)
         {
             _story = new MessageStory();
             _core = new ServiceProviderCore(config);
-            _core.SendMessageErrorEvent += _core_SendMessageErrorEvent;
+            _core.SendErrorEvent += _core_SendErrorEvent;
+            _core.GetResultErrorEvent += _core_GetResultErrorEvent;
+            _core.OnAction += _core_OnAction;
+            _core.SendCompliteEvent += _core_SendCompliteEvent;
+            _core.GetResultCompliteEvent += _core_GetResultCompliteEvent;
+            _subscribers = new Dictionary<Type, Delegate>();
 
         }
 
-        private void _core_SendMessageErrorEvent(string error, Interfaces.IMessageType message)
+        public void Register<T>(Action<T> handler) where T:class
         {
-            throw new NotImplementedException();
-        }
-
-        public static MessageBroker GetInstance(ClientConfig config)
-        {
-            if(_insance == null) {
-                lock(_this)
-                    _insance = new MessageBroker(config);
-            }
-            return _insance;
-        }
-        public static MessageBroker Instance { get => _insance; }
-        public void Run()
-        {
-            MessageBrokerThread thread = ProccessMessage;
-            IAsyncResult result = thread.BeginInvoke(CallBack, thread);
-        }
-        void CallBack(IAsyncResult asr)
-        {
-            MessageBrokerThread thread = asr.AsyncState as MessageBrokerThread;
-            thread.EndInvoke(asr);
-            // Уведомление
-        }
-        void ProccessMessage()
-        {
-            if (_latch)
+            if (_subscribers.Keys.Contains(typeof(T)))
                 return;
-            _latch = true;
 
-            _story.GetMessageForSend()?.ForEach(x => {
-                _core.Send(ref x); 
+            _subscribers.Add(typeof(T), handler);
+        }
+
+        public void CreateMessage<T>(T request,EndPoints endPoint) where T:class
+        {
+            _story.Add(new MessageType {
+                MessageGUID = Guid.NewGuid(),
+                EndPoint = endPoint,
+                Request = request,
+                RequestType = request.GetType(),
+                Status = Enums.MessageStatuses.Ready
             });
+        }
 
+        public void SendMessage()
+        {
+            _story.GetMessageForSend()?.ForEach(x => {
+                _core.Send(ref x);
+                _story.Update(x);
+            });
+        }
+        public void CheckResult()
+        {
             _story.GetForResultMessage()?.ForEach(x => {
                 _core.GetResult(ref x);
+                _story.Update(x);
             });
-
-            _latch = false;
         }
 
+        public void Process()
+        {
+            foreach(var message in _story.GetCompliteMessage()) {
+                var type = message.Result.GetType();
+                if (_subscribers.Keys.Contains(type)) {
+                    Task.Factory.StartNew(() => _subscribers[type]?.DynamicInvoke(message.Result));
+                }
+            }
+        }
+
+        #region CoreEventHandlers
+        private void _core_GetResultCompliteEvent(Interfaces.IMessageType message)
+        {
+            Console.WriteLine($"Сообщение  {message.MessageGUID} получено");
+        }
+        private void _core_SendCompliteEvent(Interfaces.IMessageType message)
+        {
+            Console.WriteLine($"Сообщение  {message.MessageGUID} отправлено");
+        }
+        private void _core_OnAction(int count)
+        {
+            Console.WriteLine("Получение результата, попытка " + count);
+        }
+        private void _core_GetResultErrorEvent(string error, Interfaces.IMessageType message)
+        {
+            Console.WriteLine($"Не удалось получить ответ на сообщение: {message.MessageGUID},произошла ошибка:{error}");
+        }
+        private void _core_SendErrorEvent(string error, Interfaces.IMessageType message)
+        {
+            Console.WriteLine($"Не удалось отправить сообщение: {message.MessageGUID},произошла ошибка:{error}");
+        }
+        #endregion
     }
 }

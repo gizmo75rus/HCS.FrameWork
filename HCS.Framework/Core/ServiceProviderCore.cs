@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+
 using HCS.BaseTypes;
 using HCS.Framework.Base;
 using HCS.Framework.Enums;
@@ -18,21 +19,24 @@ namespace HCS.Framework.Core
 
         public delegate void ErrorHandler(string error,IMessageType message);
         public delegate void ActionHandler(int count);
+        public delegate void SendCompliteHandler(IMessageType message);
+        public delegate void GetResultCompliteHandler(IMessageType message);
+
 
        
-        public event ErrorHandler SendMessageErrorEvent = delegate { };
-        public event ErrorHandler GetResultMessageError = delegate { };
+        public event ErrorHandler SendErrorEvent = delegate { };
+        public event ErrorHandler GetResultErrorEvent = delegate { };
         public event ActionHandler OnAction = delegate { };
+        public event SendCompliteHandler SendCompliteEvent = delegate { };
+        public event GetResultCompliteHandler GetResultCompliteEvent = delegate { };
 
-        /// <summary>
-        /// Количество попыток для отправки
-        /// </summary>
-        const int MAX_ATTEMPS = 5;
-
-        /// <summary>
-        /// Итервал между между попытками 1 сек
-        /// </summary>
-        const int ATTEMPS_INTERVAL = 6000;
+        Tuple<int, int>[] ATTEMS = new Tuple<int, int>[] {
+            new Tuple<int, int>(1,60),
+            new Tuple<int, int>(2,180),
+            new Tuple<int, int>(3,300),
+            new Tuple<int, int>(4,600),
+            new Tuple<int, int>(5,900)
+        };
 
         public ServiceProviderCore(ClientConfig config)
         {
@@ -62,6 +66,7 @@ namespace HCS.Framework.Core
                 message.SendDate = DateTime.Now;
                 message.ResponceGUID = Guid.Parse(ack.MessageGUID);
                 message.Status = MessageStatuses.SendOk;
+                SendCompliteEvent(message);
             }
             catch (System.ServiceModel.FaultException<IFault> ex) {
                 // Выбрать поведение в зависимости от кода ошибки soap ГИС 
@@ -83,21 +88,20 @@ namespace HCS.Framework.Core
                         errorMessage = $"Поведение для действия {Enum.GetName(typeof(Polices.Actions), action)} не реализовано";
                         break;
                 }
-                SendMessageErrorEvent($"При отправке запроса в ГИС ЖКХ произошла ошибка {errorMessage}", message);
+                SendErrorEvent($"При отправке запроса в ГИС ЖКХ произошла ошибка {errorMessage}", message);
             }
             catch (TimeoutException) {
                 message.Status = MessageStatuses.SendTimeout;
-                SendMessageErrorEvent("Запрос не отправлен, превышен интервал ожидания: ", message);
+                SendErrorEvent("Запрос не отправлен, превышен интервал ожидания: ", message);
             }
             catch (Exception ex) {
                 message.Status = MessageStatuses.SendCriticalError;
-                SendMessageErrorEvent("При отправке запроса произошло не обработанное исключение: " + ex, message);
+                SendErrorEvent("При отправке запроса произошло не обработанное исключение: " + ex, message);
             }
         }
 
         public void GetResult(ref IMessageType message)
         {
-            int currentAttems = MAX_ATTEMPS;
 
             try {
                 var provider = _providerLocator[message.EndPoint];
@@ -110,17 +114,18 @@ namespace HCS.Framework.Core
 
                 IGetStateResult stateResult = new StateResult();
 
-                while (currentAttems != 0) {
+                foreach(var i in ATTEMS) {
                     
                     if(provider.TryGetResult(ack, out stateResult)) {
                         message.CompliteDate = DateTime.Now;
                         message.Status = MessageStatuses.GetResultOk;
                         message.Result = stateResult;
+                        GetResultCompliteEvent(message);
+                        return;
                     }
-                    OnAction(currentAttems);
-                    currentAttems--;
-
-                    Thread.Sleep(ATTEMPS_INTERVAL);
+                    OnAction(i.Item1);
+                 
+                    Thread.Sleep(i.Item2*1000);
                 }
                 message.Status = MessageStatuses.GetResultTimeout;
             }
@@ -142,15 +147,15 @@ namespace HCS.Framework.Core
                         errorMessage = $"Поведение для действия {Enum.GetName(typeof(Polices.Actions), action)} не реализовано";
                         break;
                 }
-                GetResultMessageError($"При получении результата из ГИС ЖКХ произошла ошибка {errorMessage}",message);
+                GetResultErrorEvent($"При получении результата из ГИС ЖКХ произошла ошибка {errorMessage}",message);
             }
             catch (TimeoutException) {
                 message.Status = MessageStatuses.GetResultTimeout;
-                GetResultMessageError($"При получении результата из ГИС ЖКХ превышен интервал ожидания", message);
+                GetResultErrorEvent($"При получении результата из ГИС ЖКХ превышен интервал ожидания", message);
             }
             catch (Exception ex) {
                 message.Status = MessageStatuses.SendCriticalError;
-                GetResultMessageError("При получении результата произошло не обработанное исключение: "+ex.Message, message);
+                GetResultErrorEvent("При получении результата произошло не обработанное исключение: "+ex.Message, message);
             }
         }
     }

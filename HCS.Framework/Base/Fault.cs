@@ -9,7 +9,14 @@ namespace HCS.Framework.Base
 {
     public class Fault : IFault
     {
-        public string ErrorCode { get; set; }
-        public string ErrorMessage { get; set; }
+        string _code;
+        string _message;
+        public string ErrorCode { get=>_code;  set=>_code = value; }
+        public string ErrorMessage { get => _message; set=>_message = value; }
+        public Fault(string code,string message)
+        {
+            _code = code;
+            _message = message;
+        }
     }
 }

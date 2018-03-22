@@ -16,6 +16,7 @@ namespace HCS.Framework.Core
         {
             _collection = new List<IMessageType>();
         }
+
         List<IMessageType> _collection;
         MessageStatuses[] _sendCritera = new MessageStatuses[] {
             MessageStatuses.Ready,
@@ -27,22 +28,21 @@ namespace HCS.Framework.Core
             MessageStatuses.GetResultTimeout,
             MessageStatuses.GetResultError
         };
-        MessageStatuses[] _clearBrokenCriteria = new MessageStatuses[] {
+        MessageStatuses[] _brokenCriteria = new MessageStatuses[] {
             MessageStatuses.SendCriticalError,
             MessageStatuses.GetResultCriticalError,
             MessageStatuses.EndLive
         };
 
         public Result Add(IMessageType message) {
-            try {
-                var idx = _collection.FindIndex(x => x.MessageGUID == message.MessageGUID);
+            var idx = _collection.FindIndex(x => x.MessageGUID == message.MessageGUID);
+            if (idx != -1)
                 return new Result("В хранилище уже имеется сообщение: " + message.MessageGUID);
-            }
-            catch (ArgumentNullException) {
-                _collection.Add(message);
-                return new Result();
-            }
+
+            _collection.Add(message);
+            return new Result();
         }
+
         public Result Update(IMessageType message)
         {
             try {
@@ -74,9 +74,13 @@ namespace HCS.Framework.Core
         {
             return _collection.Where(x => _getResultCriteria.Contains(x.Status)).ToList();
         }
-        public List<IMessageType> GetBrokeMessage()
+        public List<IMessageType> GetCompliteMessage()
         {
-            return _collection.Where(x => _clearBrokenCriteria.Contains(x.Status)).ToList();
+            return _collection.Where(x => x.Status == MessageStatuses.GetResultOk).ToList();
+        }
+        public List<IMessageType> GetBrokenMessage()
+        {
+            return _collection.Where(x => _brokenCriteria.Contains(x.Status)).ToList();
         }
         
     }

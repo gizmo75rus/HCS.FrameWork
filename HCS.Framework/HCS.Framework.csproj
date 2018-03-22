@@ -41,14 +41,17 @@
     <Compile Include="Base\Ack.cs" />
     <Compile Include="Base\BaseEventArgs.cs" />
     <Compile Include="Base\BaseEvent.cs" />
+    <Compile Include="Base\ErrorEventArgs.cs" />
     <Compile Include="Base\Fault.cs" />
     <Compile Include="Base\Result.cs" />
     <Compile Include="Base\StateResult.cs" />
+    <Compile Include="Converters\HouseManagment\ImportResultConverter.cs" />
     <Compile Include="Core\MessageBroker.cs" />
     <Compile Include="Core\MessageStory.cs" />
     <Compile Include="Core\ServiceProviderCore.cs" />
     <Compile Include="Dto\HouseManagment\AccountDto.cs" />
     <Compile Include="Dto\HouseManagment\HouseDto.cs" />
+    <Compile Include="Dto\ImportResultDto.cs" />
     <Compile Include="Dto\NsiRef.cs" />
     <Compile Include="Enums\ClaimDirection.cs" />
     <Compile Include="Enums\MessageStatuses.cs" />
@@ -77,7 +80,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Converters\HouseManagment\Export\" />
-    <Folder Include="Converters\HouseManagment\Import\" />
     <Folder Include="Dto\Bills\" />
   </ItemGroup>
   <ItemGroup>
