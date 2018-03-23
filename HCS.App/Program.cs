@@ -27,10 +27,6 @@ namespace HCS.App
             Console.WriteLine("Укажите pin ЭЦП");
             string pin = string.Empty;//Console.ReadLine();
 
-            // иницализируем менеджер конечных точек
-            ServicePointConfig.InitConfig(cert.Item2, pin, cert.Item1);
-
-            // создаем конфиг   
             var config = new ClientConfig {
                 UseTunnel = false,
                 IsPPAK = false,
@@ -40,6 +36,18 @@ namespace HCS.App
                 Role = Globals.OrganizationRoles.UK
             };
 
+            // иницализируем менеджер конечных точек
+            ServicePointConfig.InitConfig(cert.Item2, pin, cert.Item1);
+
+            var story = new MessageStory();
+            var broker = new MessageBroker(config,story);
+
+
+            broker.AddHanbler(typeof(exportAccountResultType), ExportAccountResultHandler);
+            broker.AddHanbler(typeof(exportHouseResultType), ExportHouseResultHandler);
+
+            
+
             var request = new exportHouseDataRequest {
                 RequestHeader = RequestHelper.Create<RequestHeader>(config.OrgPPAGUID, config.Role),
                 exportHouseRequest = new exportHouseRequest {
@@ -47,7 +55,6 @@ namespace HCS.App
                     FIASHouseGuid = "7263796e-1d5a-4535-8def-93315e8975db",
                 }
             };
-
             var request2 = new exportAccountDataRequest {
                 RequestHeader = RequestHelper.Create<RequestHeader>(config.OrgPPAGUID, config.Role),
                 exportAccountRequest = new exportAccountRequest {
@@ -56,8 +63,7 @@ namespace HCS.App
                 }
             };
 
-            var broker = new MessageBroker(config);
-            broker.Register<getStateResult>(ResultHandler);
+
 
             Console.WriteLine("Создаем  сообщения");
             broker.CreateMessage(request, EndPoints.HouseManagementAsync);
@@ -95,13 +101,23 @@ namespace HCS.App
             }
         }
 
-        static void ResultHandler(getStateResult result)
+
+        static void ExportAccountResultHandler(IEnumerable<object> items)
         {
-            result.Items.ToList().ForEach(x => {
-                Console.WriteLine(x.ToString(),x.GetType().Name);
-            });
-
-
+            foreach(var item in items.OfType<exportAccountResultType>()) {
+                Console.WriteLine(item.AccountGUID);
+            }
+            Console.WriteLine("готово");
         }
+
+        static void ExportHouseResultHandler(IEnumerable<object> items)
+        {
+            foreach(var item in items.OfType<exportHouseResultType>()) {
+                Console.WriteLine(item.HouseUniqueNumber);
+            }
+            Console.WriteLine("готово");
+        }
+
+      
     }
 }

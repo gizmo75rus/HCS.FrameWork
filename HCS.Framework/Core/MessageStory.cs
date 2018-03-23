@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HCS.Framework.Base;
 using HCS.Framework.Enums;
-using HCS.Framework.Implement;
 using HCS.Framework.Interfaces;
 
 namespace HCS.Framework.Core
 {
-    public class MessageStory
+    public class MessageStory:IMessageStory
     {
         public MessageStory()
         {

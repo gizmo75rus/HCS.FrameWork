@@ -55,6 +55,7 @@
     <Compile Include="Dto\NsiRef.cs" />
     <Compile Include="Enums\ClaimDirection.cs" />
     <Compile Include="Enums\MessageStatuses.cs" />
+    <Compile Include="Helpers\IEnumerableHelper.cs" />
     <Compile Include="Implement\Claim.cs" />
     <Compile Include="Implement\MessageType.cs" />
     <Compile Include="Implement\Package.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Interfaces\IConverter.cs" />
     <Compile Include="Interfaces\IDto.cs" />
     <Compile Include="Interfaces\IEgrpRelation.cs" />
+    <Compile Include="Interfaces\IMessageStory.cs" />
     <Compile Include="Interfaces\IMessageType.cs" />
     <Compile Include="Interfaces\IPackage.cs" />
     <Compile Include="Interfaces\IParameter.cs" />

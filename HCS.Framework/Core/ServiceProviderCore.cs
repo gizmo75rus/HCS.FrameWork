@@ -125,7 +125,7 @@ namespace HCS.Framework.Core
                     }
                     OnAction(i.Item1);
                  
-                    Thread.Sleep(i.Item2*1000);
+                    Thread.Sleep(i.Item2*500);
                 }
                 message.Status = MessageStatuses.GetResultTimeout;
             }
