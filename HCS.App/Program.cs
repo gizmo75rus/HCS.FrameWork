@@ -12,6 +12,7 @@ using HCS.Framework.Implement;
 using HCS.Helpers;
 using HCS.Globals;
 using HCS.Service.Async.HouseManagement.v11_10_0_13;
+using HCS.Framework.Interfaces;
 
 namespace HCS.App
 {
@@ -33,7 +34,7 @@ namespace HCS.App
                 CertificateThumbprint = cert.Item2,
                 OrgPPAGUID = "b14c8b87-6d0d-4854-a97c-74d34e1a8ca1",
                 OrgEntityGUID = "c3ffd8b6-cda3-4eb5-9696-30fee607c8b3",
-                Role = Globals.OrganizationRoles.UK
+                Role = Globals.OrganizationRole.UK
             };
 
             // иницализируем менеджер конечных точек
@@ -41,7 +42,7 @@ namespace HCS.App
 
             var story = new MessageStory();
             var broker = new MessageBroker(config,story);
-
+           
 
             broker.AddHanbler(typeof(exportAccountResultType), ExportAccountResultHandler);
             broker.AddHanbler(typeof(exportHouseResultType), ExportHouseResultHandler);
@@ -65,14 +66,20 @@ namespace HCS.App
 
 
 
-            Console.WriteLine("Создаем  сообщения");
-            broker.CreateMessage(request, EndPoints.HouseManagementAsync);
+            Console.WriteLine("Добавляем сообщения в очередь");
+            for (int i = 0 ; i < 10; i++) {
+                request.RequestHeader.MessageGUID = Guid.NewGuid().ToString().ToLower();
+                broker.CreateMessage(request, EndPoints.HouseManagementAsync);
+            }
+
+            //broker.CreateMessage(request, EndPoints.HouseManagementAsync);
             broker.CreateMessage(request2, EndPoints.HouseManagementAsync);
 
-            Console.WriteLine("Отправка сообщений");
-            broker.SendMessage();
 
-            Console.WriteLine("Проверка результатов");
+            broker.SendMessage();
+            Console.WriteLine("Отправлено");
+
+
             broker.CheckResult();
 
             Console.WriteLine("Обработка");
@@ -102,20 +109,21 @@ namespace HCS.App
         }
 
 
-        static void ExportAccountResultHandler(IEnumerable<object> items)
+        static void ExportAccountResultHandler(IEnumerable<object> items,IMessageType message)
         {
-            foreach(var item in items.OfType<exportAccountResultType>()) {
+            Console.WriteLine($"Получен ответ для сообщения:{message.MessageGUID}");
+            foreach (var item in items.OfType<exportAccountResultType>().Take(10)) {
+                 
                 Console.WriteLine(item.AccountGUID);
             }
-            Console.WriteLine("готово");
         }
 
-        static void ExportHouseResultHandler(IEnumerable<object> items)
+        static void ExportHouseResultHandler(IEnumerable<object> items,IMessageType message)
         {
-            foreach(var item in items.OfType<exportHouseResultType>()) {
+            Console.WriteLine($"Получен ответ для сообщения:{message.MessageGUID}");
+            foreach (var item in items.OfType<exportHouseResultType>()) {
                 Console.WriteLine(item.HouseUniqueNumber);
             }
-            Console.WriteLine("готово");
         }
 
       

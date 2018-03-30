@@ -48,6 +48,7 @@
     <Compile Include="Converters\HouseManagment\ImportResultConverter.cs" />
     <Compile Include="Core\MessageBroker.cs" />
     <Compile Include="Core\MessageStory.cs" />
+    <Compile Include="Core\RequestBuilder.cs" />
     <Compile Include="Core\ServiceProviderCore.cs" />
     <Compile Include="Dto\HouseManagment\AccountDto.cs" />
     <Compile Include="Dto\HouseManagment\HouseDto.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="Dto\NsiRef.cs" />
     <Compile Include="Enums\ClaimDirection.cs" />
     <Compile Include="Enums\MessageStatuses.cs" />
+    <Compile Include="Enums\RequestOption.cs" />
     <Compile Include="Helpers\IEnumerableHelper.cs" />
     <Compile Include="Implement\Claim.cs" />
     <Compile Include="Implement\MessageType.cs" />

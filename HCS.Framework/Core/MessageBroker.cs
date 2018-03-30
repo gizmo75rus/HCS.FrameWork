@@ -12,7 +12,7 @@ using HCS.Interfaces;
 
 namespace HCS.Framework.Core
 {
-    public delegate void ResultHandler(IEnumerable<object> items);
+    public delegate void ResultHandler(IEnumerable<object> items,IMessageType message);
 
     public class MessageBroker
     {
@@ -76,16 +76,12 @@ namespace HCS.Framework.Core
         /// </summary>
         public void SendMessage()
         {
-            //Parallel.ForEach(_story.GetMessageForSend().GroupBy(x => x.EndPoint), (messages) => {
-            //    Parallel.ForEach(messages.ToBatch(NUMBER_OF_CONNECTIONS), (batch) => {
-            //        batch.ForEach(message => {
-            //            _core.Send(ref message);
-            //        });
-            //    });
-            //});
-
-            _story.GetMessageForSend().ToList().ForEach(message => {
-                _core.Send(ref message);
+            Parallel.ForEach(_story.GetMessageForSend().GroupBy(x => x.EndPoint), (messages) => {
+                Parallel.ForEach(messages.ToArray().ToNBatches(NUMBER_OF_CONNECTIONS), (batch) => {
+                    batch.ForEach(message => {
+                        _core.Send(ref message);
+                    });
+                });
             });
         }
 
@@ -94,18 +90,13 @@ namespace HCS.Framework.Core
         /// </summary>
         public void CheckResult()
         {
-            //Parallel.ForEach(_story.GetForResultMessage().GroupBy(x => x.EndPoint), (messages) => {
-            //    Parallel.ForEach(messages.ToBatch(NUMBER_OF_CONNECTIONS), (batchs) => {
-            //        batchs.ForEach(message => {
-            //            _core.GetResult(ref message);
-            //        });
-            //    });
-            //});
-
-            _story.GetForResultMessage().ToList().ForEach(message => {
-                _core.GetResult(ref message);
+            Parallel.ForEach(_story.GetForResultMessage().GroupBy(x => x.EndPoint), (messages) => {
+                Parallel.ForEach(messages.ToArray().ToNBatches(NUMBER_OF_CONNECTIONS), (batchs) => {
+                    batchs.ForEach(message => {
+                        _core.GetResult(ref message);
+                    });
+                });
             });
-
         }
 
         /// <summary>
@@ -120,7 +111,7 @@ namespace HCS.Framework.Core
                 foreach(var item in result.Items.GroupBy(x => x.GetType())) {
                     if (_handlers.Keys.Contains(item.Key)) {
                         Task.Factory.StartNew(() => {
-                            _handlers[item.Key]?.Invoke(item.AsEnumerable());
+                            _handlers[item.Key]?.Invoke(item.AsEnumerable(),message);
                         });
                     }
                 }
@@ -130,11 +121,15 @@ namespace HCS.Framework.Core
         #region CoreEventHandlers
         private void _core_GetResultCompliteEvent(Interfaces.IMessageType message)
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"Сообщение  {message.MessageGUID} получено");
+            Console.ResetColor();
         }
         private void _core_SendCompliteEvent(Interfaces.IMessageType message)
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"Сообщение  {message.MessageGUID} отправлено");
+            Console.ResetColor();
         }
         private void _core_OnAction(int count)
         {
@@ -142,11 +137,15 @@ namespace HCS.Framework.Core
         }
         private void _core_GetResultErrorEvent(string error, Interfaces.IMessageType message)
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"Не удалось получить ответ на сообщение: {message.MessageGUID},произошла ошибка:{error}");
+            Console.ResetColor();
         }
         private void _core_SendErrorEvent(string error, Interfaces.IMessageType message)
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"Не удалось отправить сообщение: {message.MessageGUID},произошла ошибка:{error}");
+            Console.ResetColor();
         }
         #endregion
     }

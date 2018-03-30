@@ -7,6 +7,7 @@ using HCS.Framework.Base;
 using HCS.Framework.Enums;
 using HCS.Framework.Interfaces;
 using HCS.Globals;
+using HCS.Helpers;
 using HCS.Interfaces;
 using HCS.Providers;
 
@@ -96,13 +97,13 @@ namespace HCS.Framework.Core
             }
             catch (Exception ex) {
                 message.Status = MessageStatuses.SendCriticalError;
-                SendErrorEvent("При отправке запроса произошло не обработанное исключение: " + ex, message);
+                
+                SendErrorEvent("При отправке запроса произошло не обработанное исключение: " + ExceptionHelper.GetBaseException(ex), message);
             }
         }
 
         public void GetResult(ref IMessageType message)
         {
-
             try {
                 var provider = _providerLocator[message.EndPoint];
                 if (provider == null)
@@ -115,16 +116,14 @@ namespace HCS.Framework.Core
                 IGetStateResult stateResult = new StateResult();
 
                 foreach(var i in ATTEMS) {
-                    
-                    if(provider.TryGetResult(ack, out stateResult)) {
+                    OnAction(i.Item1);
+                    if (provider.TryGetResult(ack, out stateResult)) {
                         message.CompliteDate = DateTime.Now;
                         message.Status = MessageStatuses.GetResultOk;
                         message.Result = stateResult;
                         GetResultCompliteEvent(message);
                         return;
                     }
-                    OnAction(i.Item1);
-                 
                     Thread.Sleep(i.Item2*500);
                 }
                 message.Status = MessageStatuses.GetResultTimeout;
@@ -155,7 +154,7 @@ namespace HCS.Framework.Core
             }
             catch (Exception ex) {
                 message.Status = MessageStatuses.SendCriticalError;
-                GetResultErrorEvent("При получении результата произошло не обработанное исключение: "+ex.Message, message);
+                GetResultErrorEvent("При получении результата произошло не обработанное исключение: " + ExceptionHelper.GetBaseException(ex), message);
             }
         }
     }
