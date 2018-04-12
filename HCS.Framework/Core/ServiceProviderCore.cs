@@ -98,7 +98,7 @@ namespace HCS.Framework.Core
             catch (Exception ex) {
                 message.Status = MessageStatuses.SendCriticalError;
                 
-                SendErrorEvent("При отправке запроса произошло не обработанное исключение: " + ExceptionHelper.GetBaseException(ex), message);
+                SendErrorEvent("При отправке запроса произошло не обработанное исключение: " + ex.GetChainException(), message);
             }
         }
 
@@ -154,7 +154,7 @@ namespace HCS.Framework.Core
             }
             catch (Exception ex) {
                 message.Status = MessageStatuses.SendCriticalError;
-                GetResultErrorEvent("При получении результата произошло не обработанное исключение: " + ExceptionHelper.GetBaseException(ex), message);
+                GetResultErrorEvent("При получении результата произошло не обработанное исключение: " + ex.GetChainException(), message);
             }
         }
     }

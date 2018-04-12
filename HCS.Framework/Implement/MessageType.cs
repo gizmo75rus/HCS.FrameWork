@@ -8,6 +8,7 @@ namespace HCS.Framework.Implement
     public class MessageType : IMessageType
     {
         public EndPoints EndPoint { get; set; }
+        public Guid OrgPPAGUID { get; set; }
         public Type RequestType { get; set; }
         public object Request { get; set; }
         public object Result { get; set; }
@@ -16,5 +17,6 @@ namespace HCS.Framework.Implement
         public DateTime SendDate { get; set; }
         public DateTime CompliteDate { get; set; }
         public MessageStatuses Status { get; set; }
+        
     }
 }

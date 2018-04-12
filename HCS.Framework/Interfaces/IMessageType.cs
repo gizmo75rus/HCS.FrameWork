@@ -12,6 +12,11 @@ namespace HCS.Framework.Interfaces
         EndPoints EndPoint { get; set; }
 
         /// <summary>
+        /// Идентификатор поставщика информации
+        /// </summary>
+        Guid OrgPPAGUID { get; set; }
+
+        /// <summary>
         /// Тип запроса
         /// </summary>
         Type RequestType { get; set; }

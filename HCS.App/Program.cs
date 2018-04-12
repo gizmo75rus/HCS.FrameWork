@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using HCS;
 using HCS.BaseTypes;
-using HCS.Framework;
 using HCS.Framework.Core;
-using HCS.Framework.Implement;
 using HCS.Helpers;
 using HCS.Globals;
 using HCS.Service.Async.HouseManagement.v11_10_0_13;
 using HCS.Framework.Interfaces;
+using HCS.Framework.RequestBuilders;
+using HCS.Framework.RequestBuilders.HouseManagment;
 
 namespace HCS.App
 {
@@ -47,38 +44,35 @@ namespace HCS.App
             broker.AddHanbler(typeof(exportAccountResultType), ExportAccountResultHandler);
             broker.AddHanbler(typeof(exportHouseResultType), ExportHouseResultHandler);
 
-            
+            BuilderOption opt = new BuilderOption();
+            opt.IsOperator = false;
+            opt.Direction = Framework.Enums.RequestDirection.Export;
+            opt.Params.Add(Framework.Enums.ParametrType.OrgPPAGUID, "b14c8b87-6d0d-4854-a97c-74d34e1a8ca1");
+            opt.Params.Add(Framework.Enums.ParametrType.FIASHouseGUID, "7263796e-1d5a-4535-8def-93315e8975db");
 
-            var request = new exportHouseDataRequest {
-                RequestHeader = RequestHelper.Create<RequestHeader>(config.OrgPPAGUID, config.Role),
-                exportHouseRequest = new exportHouseRequest {
-                    Id = Constants.SignElementId,
-                    FIASHouseGuid = "7263796e-1d5a-4535-8def-93315e8975db",
+            var builder = new RequestBuilderFactory();
+            builder.BuildError += Factory_BuildError;
+            builder.Add<exportHouseDataRequest, ExportHouseDataRequestBuilder>(opt);
+            builder.Add<exportAccountDataRequest, ExportAccountRequestBuilder>(opt);
+
+            exportHouseDataRequest request = null;
+            exportAccountDataRequest request2 = null;
+
+            if (builder.TryBuild(opt, out request)) {
+                Console.WriteLine("Добавляем сообщения в очередь");
+                for (int i = 0; i < 10; i++) {
+                    request.RequestHeader.MessageGUID = Guid.NewGuid().ToString().ToLower();
+                    broker.CreateMessage(request, EndPoints.HouseManagementAsync);
                 }
-            };
-            var request2 = new exportAccountDataRequest {
-                RequestHeader = RequestHelper.Create<RequestHeader>(config.OrgPPAGUID, config.Role),
-                exportAccountRequest = new exportAccountRequest {
-                    Id = Constants.SignElementId,
-                    FIASHouseGuid = "7263796e-1d5a-4535-8def-93315e8975db",
-                }
-            };
 
-
-
-            Console.WriteLine("Добавляем сообщения в очередь");
-            for (int i = 0 ; i < 10; i++) {
-                request.RequestHeader.MessageGUID = Guid.NewGuid().ToString().ToLower();
                 broker.CreateMessage(request, EndPoints.HouseManagementAsync);
             }
-
-            //broker.CreateMessage(request, EndPoints.HouseManagementAsync);
-            broker.CreateMessage(request2, EndPoints.HouseManagementAsync);
-
+            if (builder.TryBuild(opt, out request2)) {
+                broker.CreateMessage(request2, EndPoints.HouseManagementAsync);
+            }
 
             broker.SendMessage();
             Console.WriteLine("Отправлено");
-
 
             broker.CheckResult();
 
@@ -86,6 +80,11 @@ namespace HCS.App
             broker.Process();
 
             Console.ReadKey();
+        }
+
+        private static void Factory_BuildError(object sender, Framework.Base.ErrorEventArgs e)
+        {
+            Console.WriteLine(e.Message);
         }
 
         static Tuple<int, string> GetCert()

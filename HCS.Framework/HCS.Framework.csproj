@@ -45,36 +45,35 @@
     <Compile Include="Base\Fault.cs" />
     <Compile Include="Base\Result.cs" />
     <Compile Include="Base\StateResult.cs" />
-    <Compile Include="Converters\HouseManagment\ImportResultConverter.cs" />
+    <Compile Include="Core\DataServiceCore.cs" />
     <Compile Include="Core\MessageBroker.cs" />
     <Compile Include="Core\MessageStory.cs" />
-    <Compile Include="Core\RequestBuilder.cs" />
+    <Compile Include="Core\RequestBuilderFactory.cs" />
     <Compile Include="Core\ServiceProviderCore.cs" />
     <Compile Include="Dto\HouseManagment\AccountDto.cs" />
     <Compile Include="Dto\HouseManagment\HouseDto.cs" />
     <Compile Include="Dto\ImportResultDto.cs" />
     <Compile Include="Dto\NsiRef.cs" />
-    <Compile Include="Enums\ClaimDirection.cs" />
+    <Compile Include="Enums\RequestDirection.cs" />
     <Compile Include="Enums\MessageStatuses.cs" />
-    <Compile Include="Enums\RequestOption.cs" />
+    <Compile Include="Enums\ParametrType.cs" />
     <Compile Include="Helpers\IEnumerableHelper.cs" />
-    <Compile Include="Implement\Claim.cs" />
     <Compile Include="Implement\MessageType.cs" />
-    <Compile Include="Implement\Package.cs" />
-    <Compile Include="Implement\Parameter.cs" />
     <Compile Include="Implement\ResultProccesor.cs" />
-    <Compile Include="Interfaces\IClaim.cs" />
     <Compile Include="Interfaces\IConverter.cs" />
     <Compile Include="Interfaces\IDto.cs" />
     <Compile Include="Interfaces\IEgrpRelation.cs" />
     <Compile Include="Interfaces\IMessageStory.cs" />
     <Compile Include="Interfaces\IMessageType.cs" />
-    <Compile Include="Interfaces\IPackage.cs" />
-    <Compile Include="Interfaces\IParameter.cs" />
+    <Compile Include="Interfaces\IRequestBuilder.cs" />
     <Compile Include="Interfaces\IResultProccesor.cs" />
     <Compile Include="Polices\ActionByFault.cs" />
     <Compile Include="Polices\Actions.cs" />
     <Compile Include="Polices\SoupFaultPolicy.cs" />
+    <Compile Include="RequestBuilders\BaseBuilder.cs" />
+    <Compile Include="RequestBuilders\HouseManagment\ExportRequestBuilders.cs" />
+    <Compile Include="RequestBuilders\HouseManagment\ImportHouseUORequestBuilder.cs" />
+    <Compile Include="RequestBuilders\RequestOption.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\HCS\HCS\HCS.csproj">
@@ -83,7 +82,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Converters\HouseManagment\Export\" />
     <Folder Include="Dto\Bills\" />
   </ItemGroup>
   <ItemGroup>

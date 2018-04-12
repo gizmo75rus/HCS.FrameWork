@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace HCS.Framework.Enums
 {
     /// <summary>
-    /// Напрвление требования (импорт/экспорт)
+    /// Направление запроса (импорт/экспорт)
     /// </summary>
-    public enum ClaimDirection
+    public enum RequestDirection
     {
         /// <summary>
         /// Получение данных

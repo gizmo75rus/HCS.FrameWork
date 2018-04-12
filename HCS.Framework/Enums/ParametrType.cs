@@ -7,8 +7,9 @@ using HCS.Globals;
 
 namespace HCS.Framework.Enums
 {
-    public enum CriteriaType
+    public enum ParametrType
     {
+        IsOperator,
         OrgGUID,
         OrgPPAGUID,
         UOGUID,
@@ -28,16 +29,5 @@ namespace HCS.Framework.Enums
         SigningDate,
         DateTo,
         DateFrom
-    }
-
-    public class RequestOption
-    {
-        public OrganizationRole Role { get; private set; }
-        public Dictionary<CriteriaType, object> Criteries;
-        public RequestOption(OrganizationRole role)
-        {
-            Role = role;
-            Criteries = new Dictionary<CriteriaType, object>();
-        }
     }
 }
