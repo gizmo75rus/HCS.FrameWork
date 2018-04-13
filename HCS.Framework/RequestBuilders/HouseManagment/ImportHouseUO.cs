@@ -6,7 +6,7 @@ using HCS.Service.Async.HouseManagement.v11_10_0_13;
 
 namespace HCS.Framework.RequestBuilders.HouseManagment
 {
-    public class ImporHouseUORequestBuilder : BaseBuilder, IRequestBuilder<importHouseUODataRequest, HouseDto>
+    public class ImporHouseUO : BaseBuilder, IRequestBuilder<importHouseUODataRequest, HouseDto>
     {
         public importHouseUODataRequest[] Build(BuilderOption option, HouseDto data)
         {
@@ -15,10 +15,10 @@ namespace HCS.Framework.RequestBuilders.HouseManagment
 
             var value = new importHouseUODataRequest[]{
                 new importHouseUODataRequest {
-                    RequestHeader = Create<RequestHeader>(IsOperator, ogrPPAGuid),
+                    RequestHeader = Create<RequestHeader>(option.IsOperator, option.Get(ParametrType.OrgPPAGUID)),
                     importHouseUORequest = new importHouseUORequest {
                         Id = RequestID,
-                        Item = data.Type == HouseTypes.Apartment? apartmentHouse(data) : livingHouse(data)
+                        Item = data.Type == HouseTypes.Apartment? apartmentHouse(option.Command,data) : livingHouse(option.Command,data)
                     }
                 }
             };
@@ -26,12 +26,14 @@ namespace HCS.Framework.RequestBuilders.HouseManagment
             return value;
         }
 
-        object apartmentHouse(HouseDto data)
+        object apartmentHouse(RequestCMD command, HouseDto data)
         {
-            return new importHouseUORequestApartmentHouse { };
+            return new importHouseUORequestApartmentHouse {
+                
+            };
         }
 
-        object livingHouse(HouseDto data)
+        object livingHouse(RequestCMD command,  HouseDto data)
         {
             return new importHouseUORequestLivingHouse { };
         }

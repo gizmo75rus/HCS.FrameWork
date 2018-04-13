@@ -8,6 +8,7 @@ namespace HCS.Framework.RequestBuilders
     {
         public Dictionary<ParametrType, object> Params { get; set; }
         public RequestDirection Direction { get; set; }
+        public RequestCMD Command { get; set; }
         public bool IsOperator { get; set; }
         public BuilderOption()
         {

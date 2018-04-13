@@ -12,6 +12,7 @@ namespace HCS.Framework.Dto.HouseManagment
         public string CadastrNumber { get; set; }
         public bool HasNotRelation { get; set; }
         public DateTime ModificateDate { get; set; }
+        public string UndergroundFloorCount { get; set; }
 
         public byte MinFloorCount { get; set; }
         public decimal TotalSquare { get; set; }
@@ -58,18 +59,22 @@ namespace HCS.Framework.Dto.HouseManagment
     public class PremisesDto : BaseDto,IEgrpRelation
     {
         public bool IsResential { get; set; }
+        public bool? IsCommonProperty { get; set; }
         public string CadastrNumber { get; set; }
         public bool HasNotRelation { get; set; }
+        public string EntranceNum { get; set; }
         public string PremiseNumber { get; set; }
         public sbyte Floor { get; set; }
-        public decimal TotalSquare { get; set; }
+        public decimal? TotalSquare { get; set; }
         public decimal Square { get; set; }
+        public decimal? GrossArea { get; set; }
         public NsiRef PremiseCharacteristic { get; set; }
         public List<RoomDto> Rooms { get; set; }
         public PremisesDto()
         {
             Rooms = new List<RoomDto>();
         }
+
     }
 
     public class RoomDto : BaseDto,IEgrpRelation {

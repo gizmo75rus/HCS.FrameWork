@@ -59,7 +59,7 @@
     <Compile Include="Dto\Nsi\MunicipalServiceDto.cs" />
     <Compile Include="Dto\Unit.cs" />
     <Compile Include="Dto\UtilityListDto.cs" />
-    <Compile Include="Enums\HandBookType.cs" />
+    <Compile Include="Enums\RequestCMD.cs" />
     <Compile Include="Enums\RequestDirection.cs" />
     <Compile Include="Enums\MessageStatuses.cs" />
     <Compile Include="Enums\ParametrType.cs" />
@@ -81,7 +81,8 @@
     <Compile Include="RequestBuilders\Bills\ExportRequestBuilders.cs" />
     <Compile Include="RequestBuilders\DeviceMetering\ExportRequestBuilders.cs" />
     <Compile Include="RequestBuilders\HouseManagment\ExportRequestBuilders.cs" />
-    <Compile Include="RequestBuilders\HouseManagment\ImportHouseUORequestBuilder.cs" />
+    <Compile Include="RequestBuilders\HouseManagment\HouseDataMapper.cs" />
+    <Compile Include="RequestBuilders\HouseManagment\ImportHouseUO.cs" />
     <Compile Include="RequestBuilders\Licenses\ExportRequestBuilders.cs" />
     <Compile Include="RequestBuilders\NsiCommon\ExportRequestBuilders.cs" />
     <Compile Include="RequestBuilders\Nsi\ExportRequestBuilders.cs" />
