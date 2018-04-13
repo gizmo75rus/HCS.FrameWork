@@ -52,11 +52,15 @@ namespace HCS.App
 
             var builder = new RequestBuilderFactory();
             builder.BuildError += Factory_BuildError;
-            builder.Add<exportHouseDataRequest, ExportHouseDataRequestBuilder>(opt);
-            builder.Add<exportAccountDataRequest, ExportAccountRequestBuilder>(opt);
+            builder.Add<exportHouseDataRequest, ExportHouse>(opt);
+            builder.Add<exportAccountDataRequest, ExportAccount>(opt);
 
             exportHouseDataRequest request = null;
             exportAccountDataRequest request2 = null;
+            exportStatusCAChDataRequest request3 = null;
+            if(builder.TryBuild(opt,out request3)) {
+
+            }
 
             if (builder.TryBuild(opt, out request)) {
                 Console.WriteLine("Добавляем сообщения в очередь");

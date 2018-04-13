@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HCS.Globals;
-
-namespace HCS.Framework.Enums
+﻿namespace HCS.Framework.Enums
 {
     public enum ParametrType
     {
@@ -13,13 +6,14 @@ namespace HCS.Framework.Enums
         OrgGUID,
         OrgPPAGUID,
         UOGUID,
-        ORGN,
+        OGRN,
         INN,
         SNILS,
         FIASHouseGUID,
         LivingRoomGUID,
         PremisesGUID,
         AccountGUID,
+        RegistryNumber,
         ContractGuid,
         ContractRootGuid,
         ConractVersionGuid,
@@ -28,6 +22,8 @@ namespace HCS.Framework.Enums
         LastVersionOnly,
         SigningDate,
         DateTo,
-        DateFrom
+        DateFrom,
+        Year,
+        Month
     }
 }
