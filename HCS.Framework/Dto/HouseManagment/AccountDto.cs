@@ -7,10 +7,9 @@ namespace HCS.Framework.Dto.HouseManagment
     {
         public string AccountName { get; set; }
         public string ServiceID { get; set; }
-        public AccountTypes Type { get; set; }
-        public string HouseGuid { get; set; }
-        public string PremiseGuid { get; set; }
-        public string RoomGuid { get; set; }
+        public AccountTypes AccountType { get; set; }
+        public AccommodationType AccommodationType { get; set; }
+        public string AccommodationGuid { get; set; }
         public decimal TotalSquare { get; set; }
         public decimal ResidentialSquare { get; set; }
         public decimal GrossSquare { get; set; }
@@ -18,7 +17,6 @@ namespace HCS.Framework.Dto.HouseManagment
         public string ReasonGuid { get; set; }
         public PayerInfo Payer { get; set; }
         public AccountClose Closed { get; set; }
-
     }
 
     public class PayerInfo
@@ -33,6 +31,15 @@ namespace HCS.Framework.Dto.HouseManagment
         public DateTime Date { get; set; }
         public string Description { get; set; }
 
+    }
+
+    public enum AccommodationType
+    {
+        FIASHouseGuid,
+
+        LivingRoomGUID,
+
+        PremisesGUID,
     }
 
     public enum AccountTypes

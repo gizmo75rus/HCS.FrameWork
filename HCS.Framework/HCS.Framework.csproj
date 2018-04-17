@@ -82,6 +82,8 @@
     <Compile Include="RequestBuilders\DeviceMetering\ExportRequestBuilders.cs" />
     <Compile Include="RequestBuilders\HouseManagment\ExportRequestBuilders.cs" />
     <Compile Include="RequestBuilders\HouseManagment\HouseDataMapper.cs" />
+    <Compile Include="RequestBuilders\HouseManagment\ImportAccount.cs" />
+    <Compile Include="RequestBuilders\HouseManagment\ImportHouseRSO.cs" />
     <Compile Include="RequestBuilders\HouseManagment\ImportHouseUO.cs" />
     <Compile Include="RequestBuilders\Licenses\ExportRequestBuilders.cs" />
     <Compile Include="RequestBuilders\NsiCommon\ExportRequestBuilders.cs" />

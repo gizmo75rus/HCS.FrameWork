@@ -1,36 +1,76 @@
 ﻿using System;
 using HCS.Service.Async.HouseManagement.v11_10_0_13;
 using HCS.Framework.Dto.HouseManagment;
+using HCS.Framework.Enums;
 
 namespace HCS.Framework.RequestBuilders.HouseManagment
 {
     internal static class HouseDataMapper
     {
-        internal static importHouseUORequestApartmentHouse ApartmentHouse(bool isCreate, HouseDto house, Guid transportGuid)
+        internal static importHouseUORequestApartmentHouse MapToApartmentHouseUO(this HouseDto dto, RequestCMD cmd)
         {
-            var apartmentHouse = new importHouseUORequestApartmentHouse {
-                Item = isCreate ? ApartmentHouseCreate(house, transportGuid) : (object)ApartmentHouseUpdate(house, transportGuid)
-            };
-            return apartmentHouse;
+            var value = new importHouseUORequestApartmentHouse();
+            switch (cmd) {
+                case RequestCMD.Create:
+                    value.Item = ApartmentHouseCreate(dto);
+                    break;
+                case RequestCMD.Update:
+                    value.Item = ApartmentHouseUpdate(dto);
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+            return value;
+        }
+
+        internal static importHouseRSORequestApartmentHouse MapToApartmentHouseRSO(this HouseDto dto,RequestCMD cmd)
+        {
+            var value = new importHouseRSORequestApartmentHouse();
+            switch (cmd) {
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        internal static importHouseUORequestLivingHouse MapToLivingHouseUO(this HouseDto dto, RequestCMD cmd)
+        {
+            var value = new importHouseUORequestLivingHouse();
+
+            switch (cmd) {
+                case RequestCMD.Create:
+                    value.Item = LivingHouseToCreate(dto);
+                    break;
+                case RequestCMD.Update:
+                    value.Item = LivingHouseToUpdate(dto);
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+            return value;
+        }
+
+        internal static importHouseRSORequestLivingHouse MapToLivingHouseRSO(this HouseDto dto,RequestCMD cmd)
+        {
+            throw new NotImplementedException();
         }
 
         #region МКД
-        internal static importHouseUORequestApartmentHouseApartmentHouseToCreate ApartmentHouseCreate(HouseDto house, Guid transportGuid)
+        internal static importHouseUORequestApartmentHouseApartmentHouseToCreate ApartmentHouseCreate(HouseDto dto)
         {
             var value = new importHouseUORequestApartmentHouseApartmentHouseToCreate {
                 MinFloorCountSpecified = true,
-                MinFloorCount = (sbyte)house.MinFloorCount,
-                UndergroundFloorCount = house.UndergroundFloorCount,
-                BasicCharacteristicts = (ApartmentHouseUOTypeBasicCharacteristicts)house.BasicCharacteristicts(),
-                TransportGUID = house.TransportGuid
+                MinFloorCount = (sbyte)dto.MinFloorCount,
+                UndergroundFloorCount = dto.UndergroundFloorCount,
+                BasicCharacteristicts = (ApartmentHouseUOTypeBasicCharacteristicts)dto.BasicCharacteristicts(),
+                TransportGUID = dto.TransportGuid
             };
 
             value.BasicCharacteristicts.ItemsElementName = new ItemsChoiceType5[] { ItemsChoiceType5.No_RSO_GKN_EGRP_Registered };
             value.BasicCharacteristicts.Items = new object[] { true };
 
-            if (!string.IsNullOrEmpty(house.CadastrNumber)) {
+            if (!string.IsNullOrEmpty(dto.CadastrNumber)) {
                 value.BasicCharacteristicts.ItemsElementName = new ItemsChoiceType5[] { ItemsChoiceType5.CadastralNumber };
-                value.BasicCharacteristicts.Items = new object[] { house.CadastrNumber };
+                value.BasicCharacteristicts.Items = new object[] { dto.CadastrNumber };
             }
             else {
                 value.BasicCharacteristicts.ItemsElementName = new ItemsChoiceType5[] { ItemsChoiceType5.No_RSO_GKN_EGRP_Registered };
@@ -39,75 +79,75 @@ namespace HCS.Framework.RequestBuilders.HouseManagment
             return value;
         }
 
-        private static HouseBasicUOType BasicCharacteristicts(this HouseDto house)
+        private static HouseBasicUOType BasicCharacteristicts(this HouseDto dto)
         {
             return new HouseBasicUOType {
-                FIASHouseGuid = house.FiasGuid,
+                FIASHouseGuid = dto.FiasGuid,
                 CulturalHeritageSpecified = true,
-                CulturalHeritage = house.CulturalHeritage,
+                CulturalHeritage = dto.CulturalHeritage,
 
                 UsedYearSpecified = true,
-                UsedYear = (short)house.UsedYear,
+                UsedYear = (short)dto.UsedYear,
 
                 TotalSquareSpecified = true,
-                TotalSquare = house.TotalSquare,
+                TotalSquare = dto.TotalSquare,
 
-                FloorCount = house.FloorCount,
+                FloorCount = dto.FloorCount,
 
                 /// ОКТОМ
-                OKTMO = new OKTMORefType { code = house.OKTMO },
+                OKTMO = new OKTMORefType { code = dto.OKTMO },
                 OlsonTZ = new nsiRef {
-                    Code = house.OlsonTZ.Code,
-                    GUID = house.OlsonTZ.Guid
+                    Code = dto.OlsonTZ.Code,
+                    GUID = dto.OlsonTZ.Guid
                 },
                 State = new nsiRef {
-                    Code = house.State.Code,
-                    GUID = house.State.Guid
+                    Code = dto.State.Code,
+                    GUID = dto.State.Guid
                 }
 
             };
         }
 
-        internal static importHouseUORequestApartmentHouseApartmentHouseToUpdate ApartmentHouseUpdate(HouseDto house, Guid transportGuid)
+        internal static importHouseUORequestApartmentHouseApartmentHouseToUpdate ApartmentHouseUpdate(HouseDto dto)
         {
             var value = new importHouseUORequestApartmentHouseApartmentHouseToUpdate {
                 MinFloorCountSpecified = true,
-                MinFloorCount = (sbyte)house.MinFloorCount,
+                MinFloorCount = (sbyte)dto.MinFloorCount,
 
-                UndergroundFloorCount = house.UndergroundFloorCount,
+                UndergroundFloorCount = dto.UndergroundFloorCount,
                 BasicCharacteristicts = new HouseBasicUpdateUOType {
-                    FIASHouseGuid = house.FiasGuid,
+                    FIASHouseGuid = dto.FiasGuid,
                     CulturalHeritageSpecified = true,
-                    CulturalHeritage = house.CulturalHeritage,
+                    CulturalHeritage = dto.CulturalHeritage,
 
                     UsedYearSpecified = true,
-                    UsedYear = (short)house.UsedYear,
+                    UsedYear = (short)dto.UsedYear,
 
                     TotalSquareSpecified = true,
-                    TotalSquare = house.TotalSquare,
+                    TotalSquare = dto.TotalSquare,
 
-                    FloorCount = house.FloorCount,
+                    FloorCount = dto.FloorCount,
 
                     /// ОКТОМ
-                    OKTMO = new OKTMORefType { code = house.OKTMO },
+                    OKTMO = new OKTMORefType { code = dto.OKTMO },
                     OlsonTZ = new nsiRef {
-                        Code = house.OlsonTZ.Code,
-                        GUID = house.OlsonTZ.Guid
+                        Code = dto.OlsonTZ.Code,
+                        GUID = dto.OlsonTZ.Guid
                     },
                     State = new nsiRef {
-                        Code = house.State.Code,
-                        GUID = house.State.Guid
+                        Code = dto.State.Code,
+                        GUID = dto.State.Guid
                     }
                 },
-                TransportGUID = house.TransportGuid
+                TransportGUID = dto.TransportGuid
             };
 
             value.BasicCharacteristicts.ItemsElementName = new ItemsChoiceType5[] { ItemsChoiceType5.No_RSO_GKN_EGRP_Registered };
             value.BasicCharacteristicts.Items = new object[] { true };
 
-            if (!string.IsNullOrEmpty(house.CadastrNumber)) {
+            if (!string.IsNullOrEmpty(dto.CadastrNumber)) {
                 value.BasicCharacteristicts.ItemsElementName = new ItemsChoiceType5[] { ItemsChoiceType5.CadastralNumber };
-                value.BasicCharacteristicts.Items = new object[] { house.CadastrNumber};
+                value.BasicCharacteristicts.Items = new object[] { dto.CadastrNumber};
             }
             else {
                 value.BasicCharacteristicts.ItemsElementName = new ItemsChoiceType5[] { ItemsChoiceType5.No_RSO_GKN_EGRP_Registered };
@@ -275,20 +315,12 @@ namespace HCS.Framework.RequestBuilders.HouseManagment
         }
         #endregion
 
-        internal static importHouseUORequestLivingHouse LivingHouse(bool isCreate, HouseDto house)
-        {
-            var value = new importHouseUORequestLivingHouse {
-                Item = isCreate ? LivingHouseToCreate(house) : (object)LivingHouseToUpdate(house)
-            };
-            return value;
-        }
-
         #region Жилой дом
-        internal static importHouseUORequestLivingHouseLivingHouseToCreate LivingHouseToCreate(HouseDto house)
+        internal static importHouseUORequestLivingHouseLivingHouseToCreate LivingHouseToCreate(HouseDto dto)
         {
             var value = new importHouseUORequestLivingHouseLivingHouseToCreate {
-                BasicCharacteristicts = house.BasicCharacteristicts(),
-                TransportGUID = house.TransportGuid,
+                BasicCharacteristicts = dto.BasicCharacteristicts(),
+                TransportGUID = dto.TransportGuid,
                 HasBlocksSpecified = false,
                 HasMultipleHousesWithSameAddressSpecified = false
             };
@@ -296,9 +328,9 @@ namespace HCS.Framework.RequestBuilders.HouseManagment
             value.BasicCharacteristicts.ItemsElementName = new ItemsChoiceType5[] { ItemsChoiceType5.No_RSO_GKN_EGRP_Registered };
             value.BasicCharacteristicts.Items = new object[] { true };
 
-            if (!string.IsNullOrEmpty(house.CadastrNumber)) {
+            if (!string.IsNullOrEmpty(dto.CadastrNumber)) {
                 value.BasicCharacteristicts.ItemsElementName = new ItemsChoiceType5[] { ItemsChoiceType5.CadastralNumber };
-                value.BasicCharacteristicts.Items = new object[] { house.CadastrNumber };
+                value.BasicCharacteristicts.Items = new object[] { dto.CadastrNumber };
             }
             else {
                 value.BasicCharacteristicts.ItemsElementName = new ItemsChoiceType5[] { ItemsChoiceType5.No_RSO_GKN_EGRP_Registered };
@@ -308,42 +340,42 @@ namespace HCS.Framework.RequestBuilders.HouseManagment
             return value;
         }
 
-        internal static importHouseUORequestLivingHouseLivingHouseToUpdate LivingHouseToUpdate(HouseDto house)
+        internal static importHouseUORequestLivingHouseLivingHouseToUpdate LivingHouseToUpdate(HouseDto dto)
         {
             var value = new importHouseUORequestLivingHouseLivingHouseToUpdate {
                 BasicCharacteristicts = new HouseBasicUpdateUOType {
-                    FIASHouseGuid = house.FiasGuid,
+                    FIASHouseGuid = dto.FiasGuid,
                     CulturalHeritageSpecified = true,
-                    CulturalHeritage = house.CulturalHeritage,
+                    CulturalHeritage = dto.CulturalHeritage,
 
                     UsedYearSpecified = true,
-                    UsedYear = house.UsedYear,
+                    UsedYear = dto.UsedYear,
 
                     TotalSquareSpecified = true,
-                    TotalSquare = house.TotalSquare,
+                    TotalSquare = dto.TotalSquare,
 
-                    FloorCount = house.FloorCount,
+                    FloorCount = dto.FloorCount,
 
                     /// ОКТОМ
-                    OKTMO = new OKTMORefType { code = house.OKTMO },
+                    OKTMO = new OKTMORefType { code = dto.OKTMO },
                     OlsonTZ = new nsiRef {
-                        Code = house.OlsonTZ.Code,
-                        GUID = house.OlsonTZ.Guid
+                        Code = dto.OlsonTZ.Code,
+                        GUID = dto.OlsonTZ.Guid
                     },
                     State = new nsiRef {
-                        Code = house.State.Code,
-                        GUID = house.State.Guid
+                        Code = dto.State.Code,
+                        GUID = dto.State.Guid
                     }
                 },
-                TransportGUID = house.TransportGuid
+                TransportGUID = dto.TransportGuid
             };
 
             value.BasicCharacteristicts.ItemsElementName = new ItemsChoiceType5[] { ItemsChoiceType5.No_RSO_GKN_EGRP_Registered };
             value.BasicCharacteristicts.Items = new object[] { true };
 
-            if (!string.IsNullOrEmpty(house.CadastrNumber)) {
+            if (!string.IsNullOrEmpty(dto.CadastrNumber)) {
                 value.BasicCharacteristicts.ItemsElementName = new ItemsChoiceType5[] { ItemsChoiceType5.CadastralNumber };
-                value.BasicCharacteristicts.Items = new object[] { house.CadastrNumber };
+                value.BasicCharacteristicts.Items = new object[] { dto.CadastrNumber };
             }
             else {
                 value.BasicCharacteristicts.ItemsElementName = new ItemsChoiceType5[] { ItemsChoiceType5.No_RSO_GKN_EGRP_Registered };

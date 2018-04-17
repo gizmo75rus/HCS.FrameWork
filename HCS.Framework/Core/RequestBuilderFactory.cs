@@ -21,7 +21,7 @@ namespace HCS.Framework.Core
 
             _container.Add(new KeyContainer { RequestType = typeof(TRequest), Option = option }, typeof(TBuilder));
         }
-        public bool TryBuild<TRequest, TDto>(BuilderOption option, TDto data, out TRequest[] result)
+        public bool TryBuild<TRequest, TDto>(BuilderOption option, IEnumerable<TDto> data, out TRequest result)
             where TRequest : class
             where TDto : BaseDto
         {
