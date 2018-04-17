@@ -94,7 +94,7 @@ namespace HCS.Framework.Dto.HouseManagment
 
     public class LiftDto : BaseDto
     {
-        public string FctoryNum { get; set; }
+        public string FactoryNum { get; set; }
         public int OperatingLimit { get; set; }
         public NsiRef Type { get; set; }
     }

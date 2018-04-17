@@ -52,6 +52,7 @@
     <Compile Include="Core\ServiceProviderCore.cs" />
     <Compile Include="Dto\HandBook .cs" />
     <Compile Include="Dto\HouseManagment\AccountDto.cs" />
+    <Compile Include="Dto\HouseManagment\CounterDto.cs" />
     <Compile Include="Dto\HouseManagment\HouseDto.cs" />
     <Compile Include="Dto\ImportResultDto.cs" />
     <Compile Include="Dto\NsiRef.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="RequestBuilders\HouseManagment\ImportAccount.cs" />
     <Compile Include="RequestBuilders\HouseManagment\ImportHouseRSO.cs" />
     <Compile Include="RequestBuilders\HouseManagment\ImportHouseUO.cs" />
+    <Compile Include="RequestBuilders\HouseManagment\ImportMeteringDevice.cs" />
     <Compile Include="RequestBuilders\Licenses\ExportRequestBuilders.cs" />
     <Compile Include="RequestBuilders\NsiCommon\ExportRequestBuilders.cs" />
     <Compile Include="RequestBuilders\Nsi\ExportRequestBuilders.cs" />
