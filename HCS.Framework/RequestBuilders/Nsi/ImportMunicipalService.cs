@@ -1,10 +1,7 @@
 ﻿using System.Linq;
-using System.Collections.Generic;
-using System;
 using HCS.Service.Async.Nsi.v11_10_0_13;
 using HCS.Framework.Enums;
 using HCS.Framework.Interfaces;
-using HCS.Framework.Dto.Nsi;
 using HCS.Framework.SourceData.Nsi;
 
 namespace HCS.Framework.RequestBuilders.Nsi
