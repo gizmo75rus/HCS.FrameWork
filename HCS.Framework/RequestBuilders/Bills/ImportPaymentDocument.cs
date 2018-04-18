@@ -5,17 +5,14 @@ using HCS.Service.Async.Bills.v11_10_0_13;
 using HCS.Framework.Interfaces;
 using HCS.Framework.Dto.Bills;
 using HCS.Framework.Enums;
+using HCS.Framework.SourceData.Bills;
 
 namespace HCS.Framework.RequestBuilders.Bills
 {
-    public class ImportPaymentDocument : BaseBuilder, IRequestBuilder<importPaymentDocumentDataRequest, PaymentDataDto>
+    public class ImportPaymentDocument : BaseBuilder, IRequestBuilder<importPaymentDocumentDataRequest, PaymentDocumentData>
     {
-        public importPaymentDocumentDataRequest Build(BuilderOption option, IEnumerable<PaymentDataDto> data)
+        public importPaymentDocumentDataRequest Build(BuilderOption option, PaymentDocumentData dto)
         {
-            if (data.Count() > 1)
-                throw new ArgumentOutOfRangeException("Превышено максимальное колличество объектов PaymentDataDto ожидался 1");
-
-            var dto = data.FirstOrDefault();
             if (dto.Documents?.Count() > LIMIT_BY_REQUEST)
                 throw new ArgumentOutOfRangeException("Превышено максималое кол-во объектов PaymentDocumentDto для одного запроса");
 

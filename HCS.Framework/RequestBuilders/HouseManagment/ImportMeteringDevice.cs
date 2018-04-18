@@ -6,14 +6,15 @@ using HCS.Framework.Interfaces;
 using HCS.Framework.Enums;
 using HCS.Framework.Dto.HouseManagment;
 using HCS.Framework.Helpers;
+using HCS.Framework.SourceData.HouseManagment;
 
 namespace HCS.Framework.RequestBuilders.HouseManagment
 {
-    public class ImportMeteringDevice : BaseBuilder, IRequestBuilder<importMeteringDeviceDataRequest1, CounterDto>
+    public class ImportMeteringDevice : BaseBuilder, IRequestBuilder<importMeteringDeviceDataRequest1, CounterData>
     {
-        public importMeteringDeviceDataRequest1 Build(BuilderOption option, IEnumerable<CounterDto> data)
+        public importMeteringDeviceDataRequest1 Build(BuilderOption option, CounterData data)
         {
-            if (data.Count() > LIMIT_BY_REQUEST)
+            if (data.Values.Count() > LIMIT_BY_REQUEST)
                 throw new ArgumentOutOfRangeException("Превышено максимальное кол-во CounterDto для запроса");
 
             return new importMeteringDeviceDataRequest1 {
@@ -21,7 +22,7 @@ namespace HCS.Framework.RequestBuilders.HouseManagment
                 importMeteringDeviceDataRequest = new importMeteringDeviceDataRequest {
                     Id = RequestID,
                     FIASHouseGuid = option.Get(ParametrType.FIASHouseGUID).ToGisString(),
-                    MeteringDevice = MapMeteringDevices(option.Command, data)
+                    MeteringDevice = MapMeteringDevices(option.Command, data.Values)
                 }
             };
         }

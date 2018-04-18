@@ -7,18 +7,6 @@ using HCS.Framework.Base;
 
 namespace HCS.Framework.Dto.Bills
 {
-    public class PaymentDataDto : BaseDto {
-        public int Year { get; set; }
-        public int Month { get; set; }
-        public bool HasSpecialKP { get; set; }
-        public PaymentRequisites Requisites { get; set; }
-        public List<PaymentDocumentDto> Documents { get; set; }
-        public PaymentDataDto()
-        {
-            Documents = new List<PaymentDocumentDto>();
-        }
-    }
-
     public class PaymentDocumentDto: BaseDto
     {
         /// <summary>

@@ -43,7 +43,7 @@
     <Compile Include="Base\BaseEvent.cs" />
     <Compile Include="Base\ErrorEventArgs.cs" />
     <Compile Include="Base\Fault.cs" />
-    <Compile Include="Base\Package.cs" />
+    <Compile Include="Base\SourceData.cs" />
     <Compile Include="Base\Result.cs" />
     <Compile Include="Base\StateResult.cs" />
     <Compile Include="Core\DataServiceCore.cs" />
@@ -58,8 +58,6 @@
     <Compile Include="Dto\HouseManagment\HouseDto.cs" />
     <Compile Include="Dto\ImportResultDto.cs" />
     <Compile Include="Dto\NsiRef.cs" />
-    <Compile Include="Dto\Nsi\AdditionalServiceDto.cs" />
-    <Compile Include="Dto\Nsi\MunicipalServiceDto.cs" />
     <Compile Include="Dto\Payment\OrderDataDto.cs" />
     <Compile Include="Dto\Unit.cs" />
     <Compile Include="Dto\UtilityListDto.cs" />
@@ -99,6 +97,13 @@
     <Compile Include="RequestBuilders\Payments\ExportRequestBuilders.cs" />
     <Compile Include="RequestBuilders\Payments\ImportSupplierOrderExecution.cs" />
     <Compile Include="RequestBuilders\RequestOption.cs" />
+    <Compile Include="SourceData\HouseManagment\AccountData.cs" />
+    <Compile Include="SourceData\Bills\PaymentDocumentData.cs" />
+    <Compile Include="SourceData\Nsi\AdditionalServiceData.cs" />
+    <Compile Include="SourceData\HouseManagment\CounterData.cs" />
+    <Compile Include="SourceData\HouseManagment\HouseData.cs" />
+    <Compile Include="SourceData\Nsi\MunicipalServiceData.cs" />
+    <Compile Include="SourceData\Payments\OrderData.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\HCS\HCS\HCS.csproj">
@@ -106,7 +111,9 @@
       <Name>HCS</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Dto\Nsi\" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="System.ServiceModel" />
   </ItemGroup>

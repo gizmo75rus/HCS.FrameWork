@@ -21,9 +21,9 @@ namespace HCS.Framework.Core
 
             _container.Add(new KeyContainer { RequestType = typeof(TRequest), Option = option }, typeof(TBuilder));
         }
-        public bool TryBuild<TRequest, TDto>(BuilderOption option, IEnumerable<TDto> data, out TRequest result)
+        public bool TryBuild<TRequest, TData>(BuilderOption option, TData data, out TRequest result)
             where TRequest : class
-            where TDto : BaseDto
+            where TData : DtoData
         {
             result = null;
             if (_container.Any(x => x.Key.RequestType == typeof(TRequest) && x.Key.Option.Equals(option)) == false) {
@@ -33,7 +33,7 @@ namespace HCS.Framework.Core
 
             var type = _container.FirstOrDefault(x => x.Key.RequestType == typeof(TRequest) && x.Key.Option.Equals(option)).Value;
             var instance = Activator.CreateInstance(type);
-            var builder = (IRequestBuilder<TRequest, TDto>)instance;
+            var builder = (IRequestBuilder<TRequest, TData>)instance;
 
             try {
                 result = builder.Build(option, data);

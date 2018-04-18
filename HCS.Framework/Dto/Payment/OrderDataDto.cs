@@ -8,10 +8,6 @@ using HCS.Framework.Base;
 namespace HCS.Framework.Dto.Payment
 {
     //DTO для «Извещение о принятии к исполнению распоряжения», размещаемых исполнителем
-    public class OrderDataDto : BaseDto
-    {
-        public IEnumerable<OrderExecutionDto> Orders { get; set; }
-    }
     public class OrderExecutionDto:BaseDto
     {
         /// <summary>

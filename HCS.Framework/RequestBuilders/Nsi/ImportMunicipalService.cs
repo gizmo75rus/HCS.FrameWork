@@ -5,16 +5,14 @@ using HCS.Service.Async.Nsi.v11_10_0_13;
 using HCS.Framework.Enums;
 using HCS.Framework.Interfaces;
 using HCS.Framework.Dto.Nsi;
+using HCS.Framework.SourceData.Nsi;
 
 namespace HCS.Framework.RequestBuilders.Nsi
 {
-    public class ImportMunicipalService : BaseBuilder, IRequestBuilder<importMunicipalServicesRequest1, MunicipalServiceDto>
+    public class ImportMunicipalService : BaseBuilder, IRequestBuilder<importMunicipalServicesRequest1, MunicipalServiceData>
     {
-        public importMunicipalServicesRequest1 Build(BuilderOption option, IEnumerable<MunicipalServiceDto> data)
+        public importMunicipalServicesRequest1 Build(BuilderOption option, MunicipalServiceData dto)
         {
-            if (data.Count() > 1)
-                throw new ArgumentOutOfRangeException("Превышено макисмальное кол-во объектов типа AdditionalServiceDto, ожидался 1");
-            var dto = data.FirstOrDefault();
 
             return new importMunicipalServicesRequest1 {
                 RequestHeader = Create<RequestHeader>(option.IsOperator, option.Get(ParametrType.OrgPPAGUID)),

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using HCS.Framework.Base;
+using HCS.Framework.Dto;
 
-namespace HCS.Framework.Dto.Nsi
+namespace HCS.Framework.SourceData.Nsi
 {
-    public class MunicipalServiceDto : BaseDto
+    public class AdditionalServiceData : Base.DtoData
     {
         public IEnumerable<UtilityListDto> Values { get; set; }
     }

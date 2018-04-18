@@ -5,24 +5,21 @@ using HCS.Service.Async.HouseManagement.v11_10_0_13;
 using HCS.Framework.Interfaces;
 using HCS.Framework.Enums;
 using HCS.Framework.Dto.HouseManagment;
+using HCS.Framework.SourceData.HouseManagment;
 
 namespace HCS.Framework.RequestBuilders.HouseManagment
 {
-    public class ImportHouseRSO : BaseBuilder, IRequestBuilder<importHouseRSODataRequest, HouseDto>
+    public class ImportHouseRSO : BaseBuilder, IRequestBuilder<importHouseRSODataRequest, HouseData>
     {
-        public importHouseRSODataRequest Build(BuilderOption option, IEnumerable<HouseDto> data)
+        public importHouseRSODataRequest Build(BuilderOption option, HouseData dto)
         {
-            if(data.Count() > 1)
-                throw new ArgumentOutOfRangeException("Превышено макисмальное кол-во объектов типа HouseDto, ожидался 1");
-
-            var dto = data.FirstOrDefault();
-            switch (dto.Type) {
+            switch (dto.Value.Type) {
                 case HouseTypes.Apartment:
                     return new importHouseRSODataRequest {
                         RequestHeader = Create<RequestHeader>(option.IsOperator, option.Get(ParametrType.OrgPPAGUID)),
                         importHouseRSORequest = new importHouseRSORequest {
                             Id = RequestID,
-                            Item = dto.MapToApartmentHouseRSO(option.Command)
+                            Item = dto.Value.MapToApartmentHouseRSO(option.Command)
                         }
                     };
                 case HouseTypes.Living:
@@ -30,7 +27,7 @@ namespace HCS.Framework.RequestBuilders.HouseManagment
                         RequestHeader = Create<RequestHeader>(option.IsOperator, option.Get(ParametrType.OrgPPAGUID)),
                         importHouseRSORequest = new importHouseRSORequest {
                             Id = RequestID,
-                            Item = dto.MapToLivingHouseRSO(option.Command)
+                            Item = dto.Value.MapToLivingHouseRSO(option.Command)
                         }
                     };
                 default:

@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using HCS.Framework.Base;
+﻿using HCS.Framework.Base;
 using HCS.Framework.RequestBuilders;
 
 namespace HCS.Framework.Interfaces
 {
-    interface IRequestBuilder<TRequest, TData> where TRequest : class where TData : BaseDto
+    interface IRequestBuilder<TRequst, TSourceData> where TRequst : class where TSourceData : DtoData
     {
-        TRequest Build(BuilderOption option, IEnumerable<TData> data);
+        TRequst Build(BuilderOption option, TSourceData data);
     }
 
     interface IRequestBuilder<TRequest> where TRequest : class

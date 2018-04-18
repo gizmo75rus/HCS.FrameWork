@@ -6,17 +6,18 @@ using HCS.Framework.Interfaces;
 using HCS.Framework.Enums;
 using HCS.Framework.Dto.HouseManagment;
 using HCS.Framework.Helpers;
+using HCS.Framework.SourceData.HouseManagment;
 
 namespace HCS.Framework.RequestBuilders.HouseManagment
 {
-    public class ImportAccount : BaseBuilder, IRequestBuilder<importAccountDataRequest, AccountDto>
+    public class ImportAccount : BaseBuilder, IRequestBuilder<importAccountDataRequest, AccountData>
     {
-        public importAccountDataRequest Build(BuilderOption option, IEnumerable<AccountDto> data)
+        public importAccountDataRequest Build(BuilderOption option, AccountData data)
         {
-            if (data.Count() > LIMIT_BY_REQUEST)
+            if (data.Values.Count() > LIMIT_BY_REQUEST)
                 throw new ArgumentOutOfRangeException("Превышено макисмальное кол-во лицевых в один запрос");
 
-            var accounts = data.Select(dto => new importAccountRequestAccount {
+            var accounts = data.Values.Select(dto => new importAccountRequestAccount {
                 TransportGUID = dto.TransportGuid,
                 ItemElementName = GetAccountType(dto.AccountType),
                 Item = true,
