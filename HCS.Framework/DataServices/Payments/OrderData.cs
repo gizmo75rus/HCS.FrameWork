@@ -2,7 +2,7 @@
 using HCS.Framework.Base;
 using HCS.Framework.Dto.Payment;
 
-namespace HCS.Framework.SourceData.Payments
+namespace HCS.Framework.DataServices.Payments
 {
     public class OrderData : DtoData
     {

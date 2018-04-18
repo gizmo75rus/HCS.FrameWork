@@ -51,6 +51,7 @@
     <Compile Include="Core\MessageStory.cs" />
     <Compile Include="Core\RequestBuilderFactory.cs" />
     <Compile Include="Core\ServiceProviderCore.cs" />
+    <Compile Include="DataServices\HouseManagment\AccountDataService.cs" />
     <Compile Include="Dto\Bills\PaymentDocumentDto.cs" />
     <Compile Include="Dto\HandBook .cs" />
     <Compile Include="Dto\HouseManagment\AccountDto.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Helpers\ObjectHelper.cs" />
     <Compile Include="Implement\MessageType.cs" />
     <Compile Include="Implement\ResultProccesor.cs" />
+    <Compile Include="Interfaces\IDataService.cs" />
     <Compile Include="Interfaces\IDto.cs" />
     <Compile Include="Interfaces\IEgrpRelation.cs" />
     <Compile Include="Interfaces\IMessageStory.cs" />
@@ -97,13 +99,13 @@
     <Compile Include="RequestBuilders\Payments\ExportRequestBuilders.cs" />
     <Compile Include="RequestBuilders\Payments\ImportSupplierOrderExecution.cs" />
     <Compile Include="RequestBuilders\RequestOption.cs" />
-    <Compile Include="SourceData\HouseManagment\AccountData.cs" />
-    <Compile Include="SourceData\Bills\PaymentDocumentData.cs" />
-    <Compile Include="SourceData\Nsi\AdditionalServiceData.cs" />
-    <Compile Include="SourceData\HouseManagment\CounterData.cs" />
-    <Compile Include="SourceData\HouseManagment\HouseData.cs" />
-    <Compile Include="SourceData\Nsi\MunicipalServiceData.cs" />
-    <Compile Include="SourceData\Payments\OrderData.cs" />
+    <Compile Include="DataServices\HouseManagment\AccountData.cs" />
+    <Compile Include="DataServices\Bills\PaymentDocumentData.cs" />
+    <Compile Include="DataServices\Nsi\AdditionalServiceData.cs" />
+    <Compile Include="DataServices\HouseManagment\CounterData.cs" />
+    <Compile Include="DataServices\HouseManagment\HouseData.cs" />
+    <Compile Include="DataServices\Nsi\MunicipalServiceData.cs" />
+    <Compile Include="DataServices\Payments\OrderData.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\HCS\HCS\HCS.csproj">

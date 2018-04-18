@@ -2,7 +2,7 @@
 using HCS.Framework.Base;
 using HCS.Framework.Dto.Bills;
 
-namespace HCS.Framework.SourceData.Bills
+namespace HCS.Framework.DataServices.Bills
 {
     public class PaymentDocumentData : DtoData
     {

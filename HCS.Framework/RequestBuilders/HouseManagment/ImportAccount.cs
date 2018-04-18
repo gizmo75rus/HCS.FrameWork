@@ -6,7 +6,7 @@ using HCS.Framework.Interfaces;
 using HCS.Framework.Enums;
 using HCS.Framework.Dto.HouseManagment;
 using HCS.Framework.Helpers;
-using HCS.Framework.SourceData.HouseManagment;
+using HCS.Framework.DataServices.HouseManagment;
 
 namespace HCS.Framework.RequestBuilders.HouseManagment
 {

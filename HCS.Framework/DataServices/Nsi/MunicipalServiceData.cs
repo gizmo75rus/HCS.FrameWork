@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using HCS.Framework.Dto;
 
-namespace HCS.Framework.SourceData.Nsi
+namespace HCS.Framework.DataServices.Nsi
 {
     public class MunicipalServiceData : Base.DtoData
     {

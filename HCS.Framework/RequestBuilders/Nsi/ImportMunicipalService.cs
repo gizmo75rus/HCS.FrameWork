@@ -2,7 +2,7 @@
 using HCS.Service.Async.Nsi.v11_10_0_13;
 using HCS.Framework.Enums;
 using HCS.Framework.Interfaces;
-using HCS.Framework.SourceData.Nsi;
+using HCS.Framework.DataServices.Nsi;
 
 namespace HCS.Framework.RequestBuilders.Nsi
 {

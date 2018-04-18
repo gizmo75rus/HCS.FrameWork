@@ -5,7 +5,7 @@ using HCS.Service.Async.Bills.v11_10_0_13;
 using HCS.Framework.Interfaces;
 using HCS.Framework.Dto.Bills;
 using HCS.Framework.Enums;
-using HCS.Framework.SourceData.Bills;
+using HCS.Framework.DataServices.Bills;
 
 namespace HCS.Framework.RequestBuilders.Bills
 {

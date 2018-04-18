@@ -4,7 +4,7 @@ using HCS.Service.Async.Payment.v11_10_0_13;
 using HCS.Framework.Interfaces;
 using HCS.Framework.Enums;
 using HCS.Framework.Dto.Payment;
-using HCS.Framework.SourceData.Payments;
+using HCS.Framework.DataServices.Payments;
 
 namespace HCS.Framework.RequestBuilders.Payments
 {
