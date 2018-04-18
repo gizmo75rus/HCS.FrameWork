@@ -50,6 +50,7 @@
     <Compile Include="Core\MessageStory.cs" />
     <Compile Include="Core\RequestBuilderFactory.cs" />
     <Compile Include="Core\ServiceProviderCore.cs" />
+    <Compile Include="Dto\Bills\PaymentDocumentDto.cs" />
     <Compile Include="Dto\HandBook .cs" />
     <Compile Include="Dto\HouseManagment\AccountDto.cs" />
     <Compile Include="Dto\HouseManagment\CounterDto.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Polices\SoupFaultPolicy.cs" />
     <Compile Include="RequestBuilders\BaseBuilder.cs" />
     <Compile Include="RequestBuilders\Bills\ExportRequestBuilders.cs" />
+    <Compile Include="RequestBuilders\Bills\ImportPaymentDocument.cs" />
     <Compile Include="RequestBuilders\DeviceMetering\ExportRequestBuilders.cs" />
     <Compile Include="RequestBuilders\HouseManagment\ExportRequestBuilders.cs" />
     <Compile Include="RequestBuilders\HouseManagment\HouseDataMapper.cs" />
@@ -102,9 +104,7 @@
       <Name>HCS</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Dto\Bills\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Reference Include="System.ServiceModel" />
   </ItemGroup>
