@@ -54,5 +54,6 @@ namespace HCS.Framework.RequestBuilders
             return null;
         }
         protected string RequestID = "signed-data-container";
+        protected const int LIMIT_BY_REQUEST = 550;
     }
 }

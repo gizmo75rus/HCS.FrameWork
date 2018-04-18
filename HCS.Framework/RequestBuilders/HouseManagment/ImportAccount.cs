@@ -13,8 +13,9 @@ namespace HCS.Framework.RequestBuilders.HouseManagment
     {
         public importAccountDataRequest Build(BuilderOption option, IEnumerable<AccountDto> data)
         {
-            if (data.Count() > 550)
+            if (data.Count() > LIMIT_BY_REQUEST)
                 throw new ArgumentOutOfRangeException("Превышено макисмальное кол-во лицевых в один запрос");
+
             var accounts = data.Select(dto => new importAccountRequestAccount {
                 TransportGUID = dto.TransportGuid,
                 ItemElementName = GetAccountType(dto.AccountType),

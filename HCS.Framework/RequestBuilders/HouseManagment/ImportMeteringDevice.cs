@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HCS.Service.Async.HouseManagement.v11_10_0_13;
 using HCS.Framework.Interfaces;
 using HCS.Framework.Enums;
@@ -15,7 +13,7 @@ namespace HCS.Framework.RequestBuilders.HouseManagment
     {
         public importMeteringDeviceDataRequest1 Build(BuilderOption option, IEnumerable<CounterDto> data)
         {
-            if (data.Count() > 550)
+            if (data.Count() > LIMIT_BY_REQUEST)
                 throw new ArgumentOutOfRangeException("Превышено максимальное кол-во CounterDto для запроса");
 
             return new importMeteringDeviceDataRequest1 {
@@ -125,12 +123,27 @@ namespace HCS.Framework.RequestBuilders.HouseManagment
 
             switch (dto.Type) {
                 case CounterType.ApartmentHouseDevice:
+                    value.Item = new MeteringDeviceBasicCharacteristicsTypeApartmentHouseDevice {
+                        AccountGUID = new string[] { dto.AccountGUID }
+                    };
                     break;
                 case CounterType.CollectiveApartmentDevice:
+                    value.Item = new MeteringDeviceBasicCharacteristicsTypeCollectiveApartmentDevice {
+                        AccountGUID = new string[] { dto.AccountGUID},
+                        PremiseGUID = dto.PremisesGUID
+                    };
                     break;
                 case CounterType.CollectiveDevice:
+                    value.Item = new MeteringDeviceBasicCharacteristicsTypeCollectiveDevice {
+                        PressureSensingElementInfo = "Н/А",
+                        TemperatureSensingElementInfo = "Н/А"
+                    };
                     break;
                 case CounterType.LivingRoomDevice:
+                    value.Item = new MeteringDeviceBasicCharacteristicsTypeLivingRoomDevice {
+                        AccountGUID = new string[] { dto.AccountGUID },
+                        LivingRoomGUID = new string[] { dto.PremisesGUID }
+                    };
                     break;
                 case CounterType.NonResidentialPremiseDevice:
                     value.Item = new MeteringDeviceBasicCharacteristicsTypeNonResidentialPremiseDevice {
@@ -139,10 +152,13 @@ namespace HCS.Framework.RequestBuilders.HouseManagment
                     };
                     break;
                 case CounterType.ResidentialPremiseDevice:
-                    value.Item = 
+                    value.Item = new MeteringDeviceBasicCharacteristicsTypeResidentialPremiseDevice {
+                        AccountGUID = new string[] { dto.AccountGUID },
+                        PremiseGUID = dto.PremisesGUID
+                    };
                     break;
                 default:
-                    break;
+                    throw new NotImplementedException();
             }
 
             return value;
