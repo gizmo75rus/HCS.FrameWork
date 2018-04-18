@@ -43,6 +43,7 @@
     <Compile Include="Base\BaseEvent.cs" />
     <Compile Include="Base\ErrorEventArgs.cs" />
     <Compile Include="Base\Fault.cs" />
+    <Compile Include="Base\Package.cs" />
     <Compile Include="Base\Result.cs" />
     <Compile Include="Base\StateResult.cs" />
     <Compile Include="Core\DataServiceCore.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="Dto\NsiRef.cs" />
     <Compile Include="Dto\Nsi\AdditionalServiceDto.cs" />
     <Compile Include="Dto\Nsi\MunicipalServiceDto.cs" />
+    <Compile Include="Dto\Payment\OrderDataDto.cs" />
     <Compile Include="Dto\Unit.cs" />
     <Compile Include="Dto\UtilityListDto.cs" />
     <Compile Include="Enums\RequestCMD.cs" />
@@ -69,7 +71,6 @@
     <Compile Include="Helpers\ObjectHelper.cs" />
     <Compile Include="Implement\MessageType.cs" />
     <Compile Include="Implement\ResultProccesor.cs" />
-    <Compile Include="Interfaces\IConverter.cs" />
     <Compile Include="Interfaces\IDto.cs" />
     <Compile Include="Interfaces\IEgrpRelation.cs" />
     <Compile Include="Interfaces\IMessageStory.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="RequestBuilders\Nsi\ImportMunicipalService.cs" />
     <Compile Include="RequestBuilders\OrganizationRegistryCommon\ExportRequestBuilders.cs" />
     <Compile Include="RequestBuilders\Payments\ExportRequestBuilders.cs" />
+    <Compile Include="RequestBuilders\Payments\ImportSupplierOrderExecution.cs" />
     <Compile Include="RequestBuilders\RequestOption.cs" />
   </ItemGroup>
   <ItemGroup>
