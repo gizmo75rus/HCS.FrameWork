@@ -51,7 +51,10 @@
     <Compile Include="Core\MessageStory.cs" />
     <Compile Include="Core\RequestBuilderFactory.cs" />
     <Compile Include="Core\ServiceProviderCore.cs" />
+    <Compile Include="DataServices\Bills\PaymentDocumentDataService.cs" />
     <Compile Include="DataServices\HouseManagment\AccountDataService.cs" />
+    <Compile Include="DataServices\HouseManagment\CounterDataService.cs" />
+    <Compile Include="DataServices\HouseManagment\HouseDataService.cs" />
     <Compile Include="Dto\Bills\PaymentDocumentDto.cs" />
     <Compile Include="Dto\HandBook .cs" />
     <Compile Include="Dto\HouseManagment\AccountDto.cs" />
